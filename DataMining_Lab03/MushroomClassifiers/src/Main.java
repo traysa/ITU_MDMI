@@ -20,18 +20,17 @@ public class Main {
 		ArrayList<Mushroom> mushrooms = DataManager.LoadData();
 		System.out.println("DataManager loaded "+mushrooms.size() + " mushrooms");
 		
-		int sizeOfTestSet = 20;
+		//Size of Testset; Testset is picked from the mushroom objects
+		int sizeOfTestSet = 1000;
 		ArrayList<Mushroom> testSet = new ArrayList<Mushroom>();
-		ArrayList<Mushroom> trainingSet = mushrooms;
 		for (int i = 0; i < sizeOfTestSet; i++){
-			testSet.add(trainingSet.get(i));
+			testSet.add(mushrooms.get(i));
 		}
 		System.out.println("TestSet: "+testSet.size() + " mushrooms");
-		System.out.println("TestSet: "+testSet);
 		
-		kNNAlgorithm.nearestNeighbour(testSet,mushrooms,14);
-		
-		
+		// k-Nearest Neighbour Algorithm
+		int k = 20;
+		kNNAlgorithm.nearestNeighbour(testSet,mushrooms,k);
 	}
 
 }

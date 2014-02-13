@@ -197,11 +197,4 @@ public class Mushroom {
 		return null; //If we get down here something is wrong;
 	}
 	
-	public String toString(){
-		String result = "";
-		for (Object attribute : getAttributeList()){
-			result += this.getAttributeValue(attribute).toString() + ",";
-		}
-		return result;
-	}
 }
