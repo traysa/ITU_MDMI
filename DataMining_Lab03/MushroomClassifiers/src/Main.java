@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import javax.xml.crypto.Data;
+
 import data.Cap_Shape;
+import data.Habitat;
+import data.Odor;
 
 /**
  * Main class to run program from.
@@ -19,18 +23,23 @@ public class Main {
 		// First step - Load data and convert to Mushroom objects.
 		ArrayList<Mushroom> mushrooms = DataManager.LoadData();
 		System.out.println("DataManager loaded "+mushrooms.size() + " mushrooms");
+			
+		System.out.println(mushrooms.get(0).getAttributeValue(Habitat.class));
 		
-		//Size of Testset; Testset is picked from the mushroom objects
-		int sizeOfTestSet = 1000;
-		ArrayList<Mushroom> testSet = new ArrayList<Mushroom>();
-		for (int i = 0; i < sizeOfTestSet; i++){
-			testSet.add(mushrooms.get(i));
-		}
-		System.out.println("TestSet: "+testSet.size() + " mushrooms");
+		ID3Algorithm id3 = new ID3Algorithm();
+		System.out.println("blah " + id3.gain(mushrooms,Odor.class));
 		
-		// k-Nearest Neighbour Algorithm
-		int k = 20;
-		kNNAlgorithm.nearestNeighbour(testSet,mushrooms,k);
+//		//Size of Testset; Testset is picked from the mushroom objects
+//		int sizeOfTestSet = 1000;
+//		ArrayList<Mushroom> testSet = new ArrayList<Mushroom>();
+//		for (int i = 0; i < sizeOfTestSet; i++){
+//			testSet.add(mushrooms.get(i));
+//		}
+//		System.out.println("TestSet: "+testSet.size() + " mushrooms");
+//		
+//		// k-Nearest Neighbour Algorithm
+//		int k = 20;
+//		kNNAlgorithm.nearestNeighbour(testSet,mushrooms,k);
 	}
 
 }
