@@ -7,8 +7,10 @@ public class kNNAlgorithm {
 	//k-nearest neighbour function
 	public static void nearestNeighbour(ArrayList<Mushroom> testSet, ArrayList<Mushroom> trainingSet, int k) throws Exception{
 		int warnings = 0;
+		int errorCnt = 0;
+		int successCnt = 0;
 		for (Mushroom testMushroom : testSet){
-			System.out.println("---");
+			//System.out.println("---");
 			trainingSet.remove(testMushroom); // removing mushroom to test from the trainingset
 			int row = 0;
 			ArrayList<Neighbour> distances = new ArrayList<Neighbour>();
@@ -31,9 +33,19 @@ public class kNNAlgorithm {
 			// Print prediction and real value
 			warnings += printResult(classOccurances,testMushroom);
 
+			/*if (printResult(classOccurances,testMushroom) == 1){
+				System.out.println("error");
+				errorCnt++;
+			}
+			else successCnt++;*/
+			
+
 			// Adding mushroom to test back to the training set, so it can be used for the next mushroom to test
 			trainingSet.add(testMushroom);
 		}
+		//System.out.println("error: "+errorCnt);
+		//System.out.println("success: "+successCnt);	
+		//System.out.println("Accurancy: "+ (double)successCnt/(successCnt+errorCnt));
 		System.out.println("MISINTERPRETATIONA: "+warnings);
 	}
 	
