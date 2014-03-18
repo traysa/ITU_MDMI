@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class DataReader {
+	
+	public enum Operator {
+	    LESSTHAN, GREATERTHAN, EQUALS, CONTAINS
+	}
+	
+	
+	
+	public String[][] getData(String[][] data, String value, Operator operator){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			int i = 0;
+			boolean stop = false;
+			while (i<data[0].length && !stop) {
+				switch (operator){
+				case LESSTHAN: 
+					break;
+				case GREATERTHAN: 
+					break;
+				case EQUALS: 
+					if (line[i].trim().equals(value)){
+						selection.add(line);
+						stop = true;
+					}
+					break;
+				case CONTAINS:
+					if (line[i].contains(value)){
+						selection.add(line);
+						stop = true;
+					}
+					break;
+				}
+				i++;
+			}
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+	
+	public String[][] getData(String[][] data, int column, String value, Operator operator){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			switch (operator){
+			case LESSTHAN: 
+				break;
+			case GREATERTHAN: 
+				break;
+			case EQUALS: 
+				if (line[column].equals(value))
+					selection.add(line);
+				break;
+			case CONTAINS:
+				if (line[column].contains(value))
+					selection.add(line);
+				break;
+			}
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+	
+	public String[][] getData(String[][] data, int column, Integer value, Operator operator){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			Integer lineInt = null;
+			try {
+				lineInt = Integer.parseInt(line[column]);
+				switch (operator){
+				case LESSTHAN: 
+					if (lineInt < value)
+						selection.add(line);
+					break;
+				case GREATERTHAN: 
+					if (lineInt > value)
+						selection.add(line);
+					break;
+				case EQUALS: 
+					if (lineInt.equals(value))
+						selection.add(line);
+					break;
+				case CONTAINS: break;
+			}
+			} catch (NumberFormatException e) {
+				
+			}
+			
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+
+}

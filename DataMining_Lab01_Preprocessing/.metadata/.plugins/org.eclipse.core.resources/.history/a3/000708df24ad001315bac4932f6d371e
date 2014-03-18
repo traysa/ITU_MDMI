@@ -1,0 +1,62 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class DataReader {
+	
+	public enum Operator {
+	    LESSTHAN, GREATERTHAN, EQUAL
+	}
+	
+	public String[][] getData(String[][] data, String value){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			for (int i = 0; i<data.length; i++) {
+				System.out.println(i + " " + data[0].length);
+				if (line[i].contains(value)){
+					selection.add(line);
+					break;
+				}
+			}
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+	
+	public String[][] getData(String[][] data, int column, String value){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			if (line[column].contains(value))
+				selection.add(line);
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+	
+	public String[][] getData(String[][] data, int column, Integer value, Operator operator){
+		List<String[]> selection = new ArrayList<String[]>();
+		for (String[] line : data) {
+			Integer lineInt = null;
+			try {
+				lineInt = Integer.parseInt(line[column]);
+				switch (operator){
+				case LESSTHAN: 
+					if (lineInt < value)
+						selection.add(line);
+					break;
+				case GREATERTHAN: 
+					if (lineInt > value)
+						selection.add(line);
+					break;
+				case EQUAL: 
+					if (lineInt == value)
+						selection.add(line);
+					break;
+			}
+			} catch (NumberFormatException e) {
+				
+			}
+			
+		}
+		return selection.toArray(new String[selection.size()][]);
+	}
+
+}
