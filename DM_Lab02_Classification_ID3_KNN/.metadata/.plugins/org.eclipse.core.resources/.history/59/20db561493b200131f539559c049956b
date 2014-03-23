@@ -1,0 +1,73 @@
+package id3;
+
+import java.util.HashMap;
+
+/**
+ * 
+ * @author Theresa
+ *
+ */
+public class Node {
+	
+	private String label;
+	private Object classification;
+	private HashMap<String,Node> children;
+	private boolean leaf;
+	
+	public Node(String label, Object classification, boolean leaf){
+		this.label = label;
+		this.classification = classification;
+		this.leaf = leaf;
+		this.children = new HashMap<String,Node>();
+	}
+	
+	public void addChild(String value, Node child){
+		this.children.put(value, child);
+	}
+	
+	public HashMap<String,Node> getChildren(){
+		return children;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+	
+	public Object getClassification(){
+		return classification;
+	}
+	
+	public boolean isLeaf(){
+		return leaf;
+	}
+	
+	/**
+     * Passt die Ausgabe an GraphViz-Format an
+     *  
+     * @return	String
+	 */
+	public String nodeToStringGraphViz(){
+		String result = "node"+ this.hashCode() +"[label=\""+this.getClassification()+"\"";
+		if (!this.isLeaf())
+			result += ",peripheries=2";
+		result += "]\n";
+		return result;		
+	}
+	
+	/**
+     * Passt die Ausgabe an GraphViz-Format an
+     *  
+     * @return	String
+	 */
+	public String transistionsToStringGraphViz(){
+		String node = nodeToStringGraphViz();
+		for (String key : children.keySet()){
+			// Startknoten ->
+			node += "node" + this.hashCode() + " -> ";
+			// Zielknoten [label="Beschriftung"]
+			node += "node" + children.get(key).hashCode() + "[label=\""+children.get(key).getLabel()+"\"]\n";
+			node += children.get(key).transistionsToStringGraphViz();
+		}
+		return node;		
+	}
+}

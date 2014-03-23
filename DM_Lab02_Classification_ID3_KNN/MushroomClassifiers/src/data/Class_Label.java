@@ -1,6 +1,8 @@
 package data;
 
-public enum Class_Label {
+import id3.iClass_Label;
+
+public enum Class_Label implements iClass_Label {
 	edible,
 	poisonous,
  }

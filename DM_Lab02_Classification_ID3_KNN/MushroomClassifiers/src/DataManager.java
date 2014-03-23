@@ -1,5 +1,8 @@
+import id3.ID3Object;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
 import data.Bruises;
 import data.Cap_Color;
 import data.Cap_Shape;
@@ -32,9 +35,9 @@ import data.Veil_Type;
  */
 public class DataManager {
 	
-	public static ArrayList<Mushroom> LoadData()
+	public static ArrayList<ID3Object> LoadData()
 	{
-		ArrayList<Mushroom> datalist = new ArrayList<Mushroom>();
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();
 		
 		//First step load in data from the text file.
 		try {
@@ -44,7 +47,8 @@ public class DataManager {
 			{
 				Mushroom mushroomToAdd = new Mushroom();
 				
-				mushroomToAdd.m_Class = loadMushroomClass(data[i][0]);
+				//mushroomToAdd.m_Class = loadMushroomClass(data[i][0]);
+				mushroomToAdd.setClasslabel(loadMushroomClass(data[i][0]));
 				mushroomToAdd.m_cap_shape = loadCapShape(data[i][1]);
 				mushroomToAdd.m_cap_surface = loadCapSurface(data[i][2]);
 				mushroomToAdd.m_cap_color = loadCapColor(data[i][3]);
@@ -71,7 +75,6 @@ public class DataManager {
 				datalist.add(mushroomToAdd);
 			}			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -735,7 +738,7 @@ public class DataManager {
 		{
 			if(mushroom.getAttributeValue(Attribute).equals(AttributeValue))
 			{
-				if(mushroom.m_Class.equals(Classification))
+				if(mushroom.getClasslabel().equals(Classification))
 				{
 					count++;
 				}

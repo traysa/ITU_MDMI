@@ -1,5 +1,7 @@
+import id3.ID3Object;
+import id3.iClass_Label;
+
 import java.util.ArrayList;
-import java.util.List;
 
 import data.*;
 
@@ -8,14 +10,14 @@ import data.*;
  * More info on each attribute in agaricus-lepiotaexplanation.txt.
  *
  */
-public class Mushroom {
+public class Mushroom implements ID3Object{
 	
 	/**
 	 * Returns a list (as .class objects) of the different attribute types.
 	 * Note that the class label is not added to this list of attributes.
 	 * @return
 	 */
-	public static ArrayList<Object> getAttributeList()
+	public ArrayList<Object> getAttributeList()
 	{
 		ArrayList<Object> attributes = new ArrayList<Object>();
 		attributes.add(Cap_Shape.class);
@@ -47,7 +49,7 @@ public class Mushroom {
 	/**
 	 * The attribute to built a classifier for.
 	 */
-	public Class_Label m_Class;
+	private Class_Label m_Class;
 	
 	public Cap_Shape m_cap_shape;
 	
@@ -92,6 +94,14 @@ public class Mushroom {
 	public Population m_population;
 	
 	public Habitat m_habitat;
+	
+	public iClass_Label getClasslabel(){
+		return this.m_Class;
+	}
+	
+	public void setClasslabel(iClass_Label classLabel){
+		this.m_Class = (Class_Label) classLabel;
+	}
 	
 	/***
 	 * Returns the value of an Attribute based on its .class type object.

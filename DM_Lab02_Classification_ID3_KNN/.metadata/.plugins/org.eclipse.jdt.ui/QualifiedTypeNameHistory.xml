@@ -7,4 +7,21 @@
 <fullyQualifiedTypeName name="java.util.Enumeration"/>
 <fullyQualifiedTypeName name="data.Spore_Print_Color"/>
 <fullyQualifiedTypeName name="data.Population"/>
+<fullyQualifiedTypeName name="id3.ID3Algorithm"/>
+<fullyQualifiedTypeName name="id3.id3Object"/>
+<fullyQualifiedTypeName name="id3.iClass_Label"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.io.FileOutputStream"/>
+<fullyQualifiedTypeName name="java.io.OutputStreamWriter"/>
+<fullyQualifiedTypeName name="java.io.BufferedWriter"/>
+<fullyQualifiedTypeName name="id3.GraphPrinter"/>
+<fullyQualifiedTypeName name="id3.Node"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="javax.print.attribute.standard.DateTimeAtCompleted"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.io.FileWriter"/>
+<fullyQualifiedTypeName name="java.io.Writer"/>
+<fullyQualifiedTypeName name="id3.ID3Object"/>
 </qualifiedTypeNameHistroy>

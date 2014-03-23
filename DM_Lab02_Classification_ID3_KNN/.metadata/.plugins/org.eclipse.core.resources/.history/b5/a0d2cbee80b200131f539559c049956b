@@ -1,0 +1,132 @@
+package id3;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import data.Class_Label;
+
+public class ID3Algorithm {
+	
+	public double testData(Node decisionTree,ArrayList<ID3Object> objects){
+		int errorCnt = 0;
+		int successCnt = 0;
+		for (ID3Object object: objects){
+			if (testObject(decisionTree,object))
+				successCnt++;
+			else errorCnt++;
+		}		
+		System.out.println("error: "+errorCnt);
+		System.out.println("success: "+successCnt);		
+		return (double)successCnt/(successCnt+errorCnt);
+	}
+	
+	public boolean testObject(Node decisionTree, ID3Object object){
+		if (decisionTree.isLeaf())
+			return decisionTree.getClassification().toString().equals(object.getClasslabel().toString());
+		Object value = object.getAttributeValue(decisionTree.getClassification());
+		if (decisionTree.getChildren().get(value.toString()) == null){
+			return false;
+		}
+		if (decisionTree.getChildren().get(value.toString()).isLeaf()){
+			return decisionTree.getChildren().get(value.toString()).getClassification().toString().equals(object.getClasslabel().toString());
+		}
+		else
+		{
+			return testObject(decisionTree.getChildren().get(value.toString()), object);
+		}
+	}
+	
+	public Node generateDecisionTree(ArrayList<ID3Object> objects, Object classifierAttribute){
+		
+		Buckets buckets = this.bucketing(objects, classifierAttribute);
+		boolean leaf = false;
+		Iterator<Object> classifiers = buckets.getBuckets().keySet().iterator();
+		String leafName = "";
+		Object classifier = null;
+		while (!leaf && classifiers.hasNext()){
+			classifier = classifiers.next();
+			leafName = (String) classifier;
+			leaf = buckets.getBuckets().get(classifier).size() == buckets.getCounter();
+		}
+		
+		if (leaf){
+			return new Node(leafName,classifier,true);
+		}
+		else
+		{
+			ArrayList<InformationGain> informationGains = new ArrayList<InformationGain>();
+			
+			for(Object attribute: objects.get(0).getAttributeList()){
+				informationGains.add(new InformationGain(attribute,gain(objects,Class_Label.class,attribute)));
+			}
+			Collections.sort(informationGains);
+			Object attribute = informationGains.get(informationGains.size()-1).getAttribute();
+			
+			System.out.println(attribute);
+			Node node = new Node(attribute.toString(),attribute,false);
+			Buckets buckets1 = this.bucketing(objects, attribute);
+			for (Object attribute1: buckets1.getBuckets().keySet()){
+				//System.out.println(attribute1);
+				node.addChild(attribute1.toString(),generateDecisionTree(buckets1.getBuckets().get(attribute1),classifierAttribute));
+			}
+			return node;			
+		}		
+	}	
+	
+	private double info(ArrayList<ID3Object> objects, Object classifierAttribute){
+		Buckets buckets = bucketing(objects, classifierAttribute);
+		double result = 0.0;
+		for (ArrayList<ID3Object> bucket: buckets.getBuckets().values()){
+			double temp = ((double)bucket.size()/(double)buckets.getCounter());
+			result -= temp*log(temp,2);
+		}
+		return result;
+	}
+	
+	
+	private double info_A(ArrayList<ID3Object> objects, Object classifierAttribute, Object attribute){	
+		Buckets buckets = bucketing(objects, attribute);
+		double result = 0.0;
+		for(Object classifier: buckets.getBuckets().keySet()){
+			ArrayList<ID3Object> selection = buckets.getBuckets().get(classifier);
+			double ratio = (double)selection.size()/(double)buckets.getCounter();
+			double info = (double)info(selection,classifierAttribute);
+			result += ratio*info;
+		}
+		return result;
+	}
+
+	public double gain(ArrayList<ID3Object> objects, Object classifierAttribute, Object attribute){
+		double info = info(objects,classifierAttribute);
+		double info_A = info_A(objects,classifierAttribute,attribute);
+		return info-info_A;	
+	}
+	
+	private double log(double a, double b){	
+		return Math.log(a)/Math.log(b);
+	}
+	
+	private Buckets createBuckets(ArrayList<ID3Object> objects, Object classifier){
+		HashMap<Object,ArrayList<ID3Object>> buckets = new HashMap<Object,ArrayList<ID3Object>>();	
+		int counter = 0;
+		for(ID3Object object : objects){
+			Object attributeValue = object.getAttributeValue(classifier).toString();
+			if (buckets.containsKey(attributeValue)){
+				ArrayList<ID3Object> list = buckets.get(attributeValue);
+				list.add(object);
+				buckets.put(attributeValue,list);
+			}
+			else
+			{
+				ArrayList<ID3Object> list = new ArrayList<ID3Object>();
+				list.add(object);
+				buckets.put(attributeValue,list);
+			}
+			counter++;
+		}
+		return new Buckets(counter, buckets);
+	}
+	
+}
