@@ -1,0 +1,68 @@
+package kMean;
+import java.util.ArrayList;
+import data.*;
+
+import java.util.Random;
+
+public class KMeans {
+
+	private static int distance(Iris a, Iris b){
+		return 0;
+	}
+	
+	private static Iris mean(ArrayList<Iris> cluster){
+		int size = cluster.size();
+		float sepal_Length = 0;
+		float sepal_Width = 0;
+		float petal_Length = 0;
+		float petal_Width = 0;
+		for (Iris iris: cluster){
+			sepal_Length += iris.Petal_Length;
+			sepal_Width += iris.Petal_Width;
+			petal_Length += iris.Sepal_Length;
+			petal_Width += iris.Sepal_Width;
+		}
+		return new Iris(sepal_Length/size,sepal_Width/size,petal_Length/size,petal_Width/size,"");
+	}
+	
+	public static ArrayList<KMeanCluster> KMeansPartition(int k, ArrayList<Iris> data)
+	{
+		Iris[] clusterCenters = new Iris[k];
+		ArrayList<ArrayList<Iris>> clusters = new ArrayList<ArrayList<Iris>>();
+		Random randomGenerator = new Random();
+		for (int i = 0; i<k; i++){
+			clusterCenters[i] = data.get(randomGenerator.nextInt(data.size()));
+			ArrayList<Iris> cluster = new ArrayList<Iris>();
+			cluster.add(clusterCenters[i]);
+			clusters.set(i,cluster);
+		}
+		
+		boolean change = true;
+		while (change){
+			
+			for (Iris iris: data){
+				int minDistance = Integer.MAX_VALUE;
+				int cluster = -1;
+				for (int i = 0; i<k; i++){
+					int distance = distance(iris,clusterCenters[0]);
+					if (distance <= minDistance){
+						minDistance = distance;
+						cluster = i;
+					}
+				}
+				clusters.get(cluster).add(iris);
+			}
+			
+			ArrayList<Iris> newData = new ArrayList<Iris>();
+			for (int i = 0; i<k; i++){
+				Iris clusterCenter = mean(clusters.get(i));
+				clusterCenters[i] = clusterCenter;
+				newData.addAll(clusters.get(i));
+			}
+		}
+		
+		return null;
+		
+	}
+
+}
