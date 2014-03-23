@@ -1,0 +1,54 @@
+package id3;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+public class GraphPrinter {
+	
+	/**
+     * dot-Datei anlegen und mit Daten fuellen.
+     *  
+     * @param	file	Dateiname
+	 * @throws IOException 
+     */
+	public static void createAutomatGraphViz(String file, Node decisionTree) throws IOException{
+
+		Writer output = new BufferedWriter(new FileWriter(".\\results\\"+file+".dot"));  
+        output.write(createStringGraphViz(decisionTree));  
+        output.flush();
+        output.close();  
+		
+        
+        String commands [] = new String [] {"\"C:\\Program Files (x86)\\Graphviz2.36\\bin\\dot.exe\"","-Tpng","\"" + "..\\results\\" + file + ".dot\"","-o","\"" + "..\\results\\" + file + ".png\""};
+        
+        System.out.println("\"C:\\Program Files (x86)\\Graphviz2.36\\bin\\dot.exe\" -Tpng \"" + file + ".dot\" -o \""+file+".png\"");
+        Runtime.getRuntime().exec("\"C:\\Program Files (x86)\\Graphviz2.36\\bin\\dot.exe\" -Tpng \"" + file + ".dot\" -o \""+file+".png\"");
+        //final Process process = new ProcessBuilder(commands).start(); 
+	}
+
+	/**
+     * Daten in GraphViz-String-Format konvertieren
+     *  
+     * @return	Daten im GraphViz-String-Format
+     */
+	private static String createStringGraphViz(Node decisionTree){
+		
+		//Ausrichtung von links nach rechts
+		String result = "digraph G {\n";
+		
+		//unsichtbarer Knoten 0 der auf Startstate zeigt (fuer eingehenden Pfeil)
+		
+		result += "node0 [style=invis]\nnode0 -> \""+decisionTree.getClassification()+"\" [label=\"\"]\n";
+		result += decisionTree.transistionsToStringGraphViz();
+
+		result = result+"}";
+		
+		return result;	
+	}
+
+}

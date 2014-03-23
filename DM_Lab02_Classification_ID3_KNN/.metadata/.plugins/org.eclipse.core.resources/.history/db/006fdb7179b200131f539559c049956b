@@ -1,0 +1,5 @@
+package id3;
+
+public enum iClass_Label {
+
+}

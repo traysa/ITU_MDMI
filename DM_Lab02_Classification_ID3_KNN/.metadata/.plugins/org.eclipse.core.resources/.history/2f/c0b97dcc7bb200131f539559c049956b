@@ -1,0 +1,30 @@
+package id3;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class Buckets {
+	private int counter;
+	private HashMap<Object,ArrayList<id3Object>> buckets;
+	
+	public Buckets(int counter, HashMap<Object, ArrayList<id3Object>> buckets) {
+		this.counter = counter;
+		this.buckets = buckets;
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+	
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+	
+	public HashMap<Object, ArrayList<id3Object>> getBuckets() {
+		return buckets;
+	}
+	
+	public void setBuckets(HashMap<Object, ArrayList<id3Object>> buckets) {
+		this.buckets = buckets;
+	}
+}

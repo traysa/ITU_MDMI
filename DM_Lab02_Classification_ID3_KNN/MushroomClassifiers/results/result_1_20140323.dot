@@ -1,0 +1,5 @@
+digraph G {
+node0 [style=invis]
+node0 -> "edible" [label=""]
+"edible"[label="edible"]
+}

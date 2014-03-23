@@ -1,0 +1,123 @@
+import id3.GraphPrinter;
+import id3.ID3Algorithm;
+import id3.Node;
+import id3.ID3Object;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import kNN.kNNAlgorithm;
+import data.Class_Label;
+
+/**
+ * Main class to run program from.
+ * 
+ * @author Anders Hartzen
+ *
+ */
+public class Main {
+
+	/**
+	 * @param args
+	 * @throws Exception 
+	 */
+	public static void main(String[] args) throws Exception {
+		// First step - Load data and convert to Mushroom objects.
+		ArrayList<ID3Object> mushrooms = DataManager.LoadData();
+		System.out.println("DataManager loaded "+mushrooms.size() + " mushrooms\n");
+		
+		System.out.println("================================================");
+		System.out.println("ID3 Algorithm");
+		System.out.println("================================================");
+		boolean loop = true;
+		if (loop)
+			loopID3(mushrooms);
+		else
+			ID3(mushrooms,209);
+
+		System.out.println("\n");
+		System.out.println("================================================");
+		System.out.println("kNN Algorithm");
+		System.out.println("================================================");
+
+		int sizeOfTestSet = 5;
+		ArrayList<ID3Object> trainingSet = new ArrayList<ID3Object>();
+		for (int i = 0; i < sizeOfTestSet; i++){
+			trainingSet.add(mushrooms.get(i));
+		}
+		int k = 1;
+		double result = kNNAlgorithm.nearestNeighbour(mushrooms,trainingSet,k);
+		System.out.println("\nTestSet:\t"+trainingSet.size() + " mushrooms");
+		System.out.println("\nk:\t"+k);
+		System.out.println("Accurancy:\t" + result);
+	}
+	
+	/**
+	 * 
+	 * @param mushrooms
+	 * @param sizeOfTestSet
+	 */
+	private static void ID3(ArrayList<ID3Object> mushrooms, int sizeOfTestSet){
+		//Size of Testset; Testset is picked from the mushroom objects
+		ArrayList<ID3Object> testSet = new ArrayList<ID3Object>();
+		for (int i = 0; i < sizeOfTestSet; i++){
+			testSet.add(mushrooms.get(i));
+		}
+		
+		ID3Algorithm id3 = new ID3Algorithm();
+		Node decisionTree = id3.generateDecisionTree(testSet,Class_Label.class,"");
+	    
+	    try {
+		    GraphPrinter graphPrinter = new GraphPrinter("C:\\Program Files (x86)\\Graphviz2.36\\bin","png",".\\results");
+		    graphPrinter.createAutomatGraphViz("result_"+sizeOfTestSet+"_"+new SimpleDateFormat("yyyyMMdd").format(new Date()), decisionTree);
+	    }
+	    catch (Exception e){
+	    	
+	    }
+		
+		double result = id3.testData(decisionTree, mushrooms);
+		
+		System.out.println("\nTestSet:\t"+testSet.size() + " mushrooms");
+		System.out.println("Accurancy:\t" + result);
+	}
+	
+	/**
+	 * 
+	 * @param mushrooms
+	 */
+	private static void loopID3(ArrayList<ID3Object> mushrooms){
+		//Size of Testset; Testset is picked from the mushroom objects
+		System.out.println("\nTestSet (Mushrooms)\t| Accuracy");
+		System.out.println("---------------------------------------------");
+		double currentAccruracy = 0;
+		int sizeOfTestSet = 1;
+		boolean maxAccuracy = false;
+		while (sizeOfTestSet<=mushrooms.size() && !maxAccuracy){
+			ArrayList<ID3Object> testSet = new ArrayList<ID3Object>();
+			for (int i = 0; i < sizeOfTestSet; i++){
+				testSet.add(mushrooms.get(i));
+			}
+			
+			ID3Algorithm id3 = new ID3Algorithm();
+			Node decisionTree = id3.generateDecisionTree(testSet,Class_Label.class,"");
+		    
+			double result = id3.testData(decisionTree, mushrooms);
+			if (currentAccruracy < result){
+				System.out.println(testSet.size()+"\t\t\t| "+result);
+				currentAccruracy = result;
+			    try {
+				    GraphPrinter graphPrinter = new GraphPrinter("C:\\Program Files (x86)\\Graphviz2.36\\bin","png",".\\results");
+				    graphPrinter.createAutomatGraphViz("result_"+sizeOfTestSet+"_"+new SimpleDateFormat("yyyyMMdd").format(new Date()), decisionTree);
+			    }
+			    catch (Exception e){
+			    	
+			    }
+			}
+			if (result >= 1.0)
+				maxAccuracy = true;
+			sizeOfTestSet++;
+		}
+	}
+
+}
