@@ -14,13 +14,13 @@ public class ItemSet {
 	 * The PRIMES array is internally in the ItemSet-class' hashCode method
 	 */
 	private static final int[] PRIMES = { 2, 3, 5, 7, 11, 13, 17, 23, 27, 31, 37 };
-    final int[] set;
+    final Integer[] set;
 
     /***
      * Creates a new instance of the ItemSet class.
      * @param set Transaction content
      */
-    public ItemSet( int[] set ) {
+    public ItemSet( Integer[] set ) {
         this.set = set;
     }
 
