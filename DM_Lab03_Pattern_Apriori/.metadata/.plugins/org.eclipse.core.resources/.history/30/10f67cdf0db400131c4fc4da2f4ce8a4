@@ -1,0 +1,25 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
+public class AssociationRule {
+	
+	double countAB;
+	ItemSet setA;
+	double countA;
+	ItemSet setB;
+	double confidence = 0;
+	
+	public AssociationRule(double countAB, ItemSet setA, double countA, ItemSet setB, double countB){
+		this.setA = setA;
+		this.setB = setB;
+		this.countAB = countAB;
+		this.countA = countA;
+		confidence = this.countAB / this.countA;
+	}
+
+	public String toString(){
+		return "Confidence("+this.setA+" => "+this.setB+") = " + this.countAB + "/" + this.countA + " = " + new BigDecimal(confidence).setScale(3,RoundingMode.HALF_UP).doubleValue();
+		
+	}
+}

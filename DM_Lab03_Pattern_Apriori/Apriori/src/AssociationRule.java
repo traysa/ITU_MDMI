@@ -1,3 +1,6 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 
 public class AssociationRule {
 	
@@ -20,7 +23,7 @@ public class AssociationRule {
 	}
 
 	public String toString(){
-		return "Confidence("+this.setA+" => "+this.setB+") = " + this.countAB + "/" + this.countA + " = " + confidence;
+		return this.setAB+": Confidence("+this.setA+" => "+this.setB+") = " + this.countAB + "/" + this.countA + " = " + new BigDecimal(confidence).setScale(3,RoundingMode.HALF_UP).doubleValue();
 		
 	}
 }

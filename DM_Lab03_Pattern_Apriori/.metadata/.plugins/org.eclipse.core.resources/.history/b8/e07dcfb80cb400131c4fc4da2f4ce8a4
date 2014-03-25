@@ -1,0 +1,270 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
+
+
+public class Apriori {
+	
+	static final boolean DEBUG = false;
+	
+	/***
+	 * The TRANSACTIONS 2-dimensional array holds the full data set for the lab
+	 */
+    static final int[][] TRANSACTIONS = new int[][] { { 1, 2, 3, 4, 5 }, { 1, 3, 5 }, { 2, 3, 5 }, { 1, 5 }, { 1, 3, 4 }, { 2, 3, 5 }, { 2, 3, 5 },
+                    { 3, 4, 5 }, { 4, 5 }, { 2 }, { 2, 3 }, { 2, 3, 4 }, { 3, 4, 5 } };
+
+    static final int[][] TRANSACTIONS1 = new int[][] { {1,2,5}, {2,4}, {2,3}, {1,2,4}, {1,3}, {2,3}, {1,3},
+        {1,2,3,5}, {1,2,3} };
+    
+    /**
+     * 
+     * @param args
+     * @throws Exception
+     */
+    public static void main( String[] args ) throws Exception {
+    	// Select a reasonable support threshold via trial-and-error. Can either be percentage or absolute value
+    	final int supportThreshold = 4;
+    	// Select a reasonable confidence threshold (percentage value)
+    	final double confidenceThreshold = 0.7;
+    	
+		// Print
+		System.out.print("TRANSACTIONS (" + TRANSACTIONS.length + " items): ");
+		String resultStr = "";
+		for(int[] transaction: TRANSACTIONS){
+			resultStr += "[";
+			for(int item: transaction)
+				resultStr += item+", ";
+			resultStr = resultStr.substring(0, resultStr.lastIndexOf(",")) + "],";
+    	}
+		resultStr = resultStr.substring(0, resultStr.lastIndexOf(","));
+		System.out.println(resultStr);
+    	
+		Apriori apriori = new Apriori();
+    	Hashtable<ItemSet,Integer> frequentItemSets = apriori.apriori(TRANSACTIONS, supportThreshold);
+        System.out.println("\nFREQUENT ITEMSETS:");
+        for(ItemSet itemset: frequentItemSets.keySet()){
+        	System.out.println(itemset + " = " + frequentItemSets.get(itemset));
+        }
+        
+        ArrayList<AssociationRule> associationRules = apriori.createAssociationRules(frequentItemSets, confidenceThreshold);
+        System.out.println("\nASSOCIATION RULES:");
+        for(AssociationRule rule: associationRules){
+        	System.out.println(rule);
+        }
+    }
+    
+    /**
+     * Create association rules from frequent itemsets
+     * 
+     * @param frequentItemSets Frequent itemsets and their number of occurrences in the transactions
+     * @param confidenceThreshold Minimum confidence
+     * @return List of association rules, which satisfy the minimum confidence
+     */
+    public ArrayList<AssociationRule> createAssociationRules(Hashtable<ItemSet,Integer> frequentItemSets, double confidenceThreshold){
+        // TODO: create association rules from the frequent itemsets
+    	ArrayList<AssociationRule> result = new ArrayList<AssociationRule>();
+        for (ItemSet itemSet : frequentItemSets.keySet()){
+    	   if (itemSet.set.length > 1)
+	    	   for (ItemSet itemSet2 : frequentItemSets.keySet()){
+	        	   if (!itemSet.equals(itemSet2) && itemSet.set.length > itemSet2.set.length){
+	        		   HashSet<Integer> set1 = new HashSet<Integer>(Arrays.asList(itemSet.set));
+	        		   HashSet<Integer> set2 = new HashSet<Integer>(Arrays.asList(itemSet2.set));
+	        		   if (set1.containsAll(set2)){
+	        			   if (set1.removeAll(set2)){
+	        				   ItemSet itemSet3 = new ItemSet(set1.toArray(new Integer[set1.size()]));
+	        				   double confidence = (double)frequentItemSets.get(itemSet) / (double)frequentItemSets.get(itemSet3);
+	        				   if (confidence > confidenceThreshold){
+	        					   AssociationRule rule = new AssociationRule(itemSet,frequentItemSets.get(itemSet),itemSet3,frequentItemSets.get(itemSet3),itemSet2,frequentItemSets.get(itemSet2));
+	        					   result.add(rule);
+	        				   }
+	        			   }
+	        		   }
+	        	   }
+	           }
+       }
+       return result;
+    }
+
+    /**
+     * Apriori algorithm
+     * Finds all frequent itemsets in given transaction, which satisfy the minimum support
+     * 
+     * @param transactions
+     * @param supportThreshold
+     * @return All frequent itemsets, which satisfy the minimum support
+     * @throws Exception
+     */
+    public Hashtable<ItemSet,Integer> apriori( int[][] transactions, int supportThreshold ) throws Exception {
+    	// Get candidates for Level 1
+    	Hashtable<ItemSet,Integer> frequentItemSets = generateFrequentItemSetsLevel1( transactions, supportThreshold );
+    	// Create next level frequent itemsets as long as there are any
+        Hashtable<ItemSet,Integer> result = new Hashtable<ItemSet,Integer>(frequentItemSets);
+        for (int k = 1; frequentItemSets.size() > 0; k++) {
+            frequentItemSets = generateFrequentItemSets(supportThreshold, transactions, frequentItemSets);
+            result.putAll(frequentItemSets);
+            if (DEBUG){
+            	// Print
+            	System.out.println("frequentItemSet - L"+ (k + 1) +" (" + frequentItemSets.size() + " items found):");
+            	for(ItemSet itemset: frequentItemSets.keySet()){
+    	    		System.out.println(itemset + ": " + frequentItemSets.get(itemset));
+    	    	}
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Get set of frequent 1-itemsets L1
+     * 
+     * First get candidates for Level 1, which are each single item in all the transactions and count their occurrences.
+     * Only candidates which satisfy the minimum support are getting into the frequent 1-itemsets L1. 
+     * 
+     * @param transactions Transactions to consider
+     * @param supportThreshold Minimum number of occurrences required (Minimum support)
+     * @return Frequent 1-itemsets L1
+     */
+    private Hashtable<ItemSet, Integer> generateFrequentItemSetsLevel1( int[][] transactions, int supportThreshold ) {
+        Hashtable<ItemSet, Integer> tempFrequentItemSetL1 = new Hashtable<ItemSet, Integer>();
+    	Hashtable<ItemSet, Integer> frequentItemSetL1 = new Hashtable<ItemSet, Integer>();
+    	
+    	for(int[] itemset: transactions){
+    		for(int item: itemset){
+    			ItemSet newItemSet = new ItemSet(new Integer[]{item});
+    			if (frequentItemSetL1.containsKey(newItemSet)){
+    				// If item is already in the frequentItemSet, just increment the count
+    				int count = frequentItemSetL1.get(newItemSet) + 1;
+    				frequentItemSetL1.put(newItemSet, count);
+    			}
+    			else
+    			{
+    				// If item is not in the frequentItemSet, add it to the temporary frequentItemSet
+    				// If the supportThreshold in the temporary frequentItemSet is reached, add the item to the frequentItemSet
+    				if (tempFrequentItemSetL1.containsKey(newItemSet)){
+        				int count = tempFrequentItemSetL1.get(newItemSet) + 1;
+        				if (count >= supportThreshold)
+        					frequentItemSetL1.put(newItemSet, count);
+        				else
+        					tempFrequentItemSetL1.put(newItemSet, count);
+    				}
+    				else
+    				{
+    					tempFrequentItemSetL1.put(newItemSet, 1);
+    				}
+    			}
+    		}
+    	}
+    	
+    	if (DEBUG){
+    		//Print
+    		System.out.println("frequentItemSet - L1:");
+	    	for(ItemSet itemset: frequentItemSetL1.keySet()){
+	    		System.out.println(itemset + ": " + frequentItemSetL1.get(itemset));
+	    	}
+    	}
+    	
+        return frequentItemSetL1;
+    }
+
+    /**
+     * Get set of frequent itemsets of the next level
+     * 
+     * First get candidates for the next Level, based on the given frequent k-itemsets.
+     * To get candidates for the next level, the frequent k-itemsets are joined Lk x Lk (The two joining itemsets have to share k-1 items).
+     * 
+     * The occurrences of the candidates are counted.
+     * 
+     * Only candidates which satisfy the minimum support are getting into the frequent itemsets of the next level.
+     * 
+     * @param supportThreshold Minimum number of occurrences required (Minimum support)
+     * @param transactions Transactions to consider
+     * @param lowerLevelItemSets Frequent k-itemset Lk
+     * @return
+     * @throws Exception
+     */
+    private Hashtable<ItemSet, Integer> generateFrequentItemSets( int supportThreshold, int[][] transactions,
+                    Hashtable<ItemSet, Integer> lowerLevelItemSets ) throws Exception {
+        // First generate candidate itemsets from the lower level itemsets
+    	Hashtable<ItemSet, Integer> candidates = new Hashtable<ItemSet, Integer>();
+    	for (ItemSet itemset: lowerLevelItemSets.keySet()){
+    		for (ItemSet itemset2: lowerLevelItemSets.keySet()){
+    			ItemSet joined = joinSets(itemset,itemset2);
+    			if (joined != null){
+    				if (!candidates.containsKey(joined)){
+    					int support = countSupport(joined.set,transactions);
+    		    		if (support >= supportThreshold)
+    		    			candidates.put(joined, support);
+    				}
+    			}
+    		}
+    	}
+    	
+        return candidates;
+    }
+
+    /**
+     * Join two frequent k-itemsets Lk x Lk (The two joining itemsets have to share k-1 items)
+     * 
+     * @param first Itemset1
+     * @param second Itemset2
+     * @return Joined itemset
+     * @throws Exception
+     */
+    private ItemSet joinSets( ItemSet first, ItemSet second ) throws Exception {
+        if (first.set.length != second.set.length)
+        	throw new Exception("Sets must be from the same size.");
+        if (!first.equals(second)){
+	        int k = first.set.length;
+	        Integer[] set = new Integer[k+1];
+	        boolean skip = false;
+	        for (int i = 0; i < k-1; i++){
+	        	if (first.set[i] == second.set[i]){
+	        		set[i] = first.set[i];
+	        	}
+	        	else {
+	        		skip = true;
+	        		break;
+	        	}
+	        }
+	        if (second.set[k-1] < first.set[k-1]){
+	    		set[k-1] = second.set[k-1];
+	    		set[k] = first.set[k-1];
+	        }
+	    	else{
+	    		set[k-1] = first.set[k-1];
+	    		set[k] = second.set[k-1];
+	    	}
+	        if (skip)
+	        	return null;
+	        else
+	        	return new ItemSet(set);
+        }
+        return null;
+    }
+
+    /**
+     * Count the support of an itemset in given transactions
+     * 
+     * @param itemSet Itmset
+     * @param transactions Transactions to consider
+     * @return Support count
+     */
+    private int countSupport( Integer[] itemSet, int[][] transactions ) {
+        // Assumes that items in ItemSets and transactions are both unique
+    	HashSet<Integer> mySet1 = new HashSet<Integer>();
+		for (int i: itemSet){
+			mySet1.add(i);
+    	}
+    	int result = 0;
+    	for (int[] itemSet2: transactions){
+    		HashSet<Integer> mySet2 = new HashSet<Integer>();
+    		for (int i: itemSet2){
+    			mySet2.add(i);
+    		}
+    		if (mySet2.containsAll(mySet1))
+    			result++;
+    	}
+        return result;
+    }
+
+}
