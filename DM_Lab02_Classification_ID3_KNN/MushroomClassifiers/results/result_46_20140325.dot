@@ -1,0 +1,17 @@
+digraph G {
+node0 [style=invis]
+node0 -> "class data.Odor" [label=""]
+"class data.Odor"[label="Odor",peripheries=2]
+"class data.Odor" -> "edible" [label="anise"]
+"edible"[label="edible"]
+"class data.Odor" -> "edible" [label="almond"]
+"edible"[label="edible"]
+"class data.Odor" -> "edible" [label="none"]
+"edible"[label="edible"]
+"class data.Odor" -> "poisonous" [label="pungent"]
+"poisonous"[label="poisonous"]
+"class data.Odor" -> "poisonous" [label="foul"]
+"poisonous"[label="poisonous"]
+"class data.Odor" -> "poisonous" [label="musty"]
+"poisonous"[label="poisonous"]
+}
