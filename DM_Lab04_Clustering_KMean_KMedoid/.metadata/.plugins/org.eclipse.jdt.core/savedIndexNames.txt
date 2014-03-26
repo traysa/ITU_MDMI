@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 INDEX VERSION 1.126+D:\data\Studium\Master\Semester 2\Data Mining\Exercises\ITU_MDMI\DM_Lab04_Clustering_KMean_KMedoid\.metadata\.plugins\org.eclipse.jdt.core
 3065916431.index
 1995173708.index
@@ -14,3 +15,32 @@ INDEX VERSION 1.126+D:\data\Studium\Master\Semester 2\Data Mining\Exercises\ITU_
 3133528496.index
 3974580528.index
 4155206848.index
+=======
+INDEX VERSION 1.126+/Users/theresa/Documents/Studium/Semester 2/Data Mining/Exercises/ITU_MDMI/DM_Lab04_Clustering_KMean_KMedoid/.metadata/.plugins/org.eclipse.jdt.core
+4263695052.index
+3712507179.index
+4238209716.index
+2326659272.index
+272178059.index
+3000285004.index
+450555687.index
+1833648217.index
+3302703152.index
+4249315662.index
+3321539481.index
+760545572.index
+3954040986.index
+156905802.index
+1384487945.index
+765977872.index
+1622012492.index
+3266567714.index
+2153820698.index
+770573466.index
+3004609673.index
+2286151582.index
+2545238116.index
+1819685514.index
+1271342938.index
+84777399.index
+>>>>>>> 667f7ec91e5a13839f6a43c85347df91b22267ef

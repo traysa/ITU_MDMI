@@ -44,7 +44,7 @@ public class Main {
 		if (looptype==1)
 			loopKNNoverTrainingSet(mushrooms,7);
 		else if (looptype==2)
-			loopKNNoverK(mushrooms,500);
+			loopKNNoverK(mushrooms,700);
 		else KNN(mushrooms,209,7);
 	}
 	

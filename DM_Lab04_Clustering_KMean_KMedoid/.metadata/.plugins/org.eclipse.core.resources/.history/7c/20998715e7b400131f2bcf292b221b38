@@ -1,0 +1,10 @@
+package data;
+
+
+public interface Item extends Comparable<Item> {
+
+	public int compareTo(Item obj);
+	
+	public float distance(Item obj);
+
+}

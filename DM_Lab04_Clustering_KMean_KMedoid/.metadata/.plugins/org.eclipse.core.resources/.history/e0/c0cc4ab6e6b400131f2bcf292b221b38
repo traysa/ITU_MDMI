@@ -1,0 +1,8 @@
+package data;
+
+
+public interface Item extends Comparable<Item> {
+
+	int compareTo(Item obj);
+
+}

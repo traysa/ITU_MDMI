@@ -13,7 +13,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		//First step load in iris data
-		ArrayList<Iris> irisData = DataLoader.LoadAllIrisData();
+		ArrayList<Item> irisData = DataLoader.LoadAllIrisData();
 		System.out.println(irisData);
 		
 		//Second step --> do the clustering using k-means!
