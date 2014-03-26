@@ -1,15 +1,17 @@
 package data;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+
+import kMean.KMeanCluster;
 
 
-public class Iris implements Comparable<Iris> {
+public class Iris implements Item {
 
-	public float Sepal_Length;
-	public float Sepal_Width;
-	public float Petal_Length;
-	public float Petal_Width;
-	public IrisClass Class;
+	private float Sepal_Length;
+	private float Sepal_Width;
+	private float Petal_Length;
+	private float Petal_Width;
+	private IrisClass Class;
 	
 	public Iris(float sepal_length, float sepal_width, float petal_length, float petal_width, String iris_class)
 	{
@@ -51,12 +53,63 @@ public class Iris implements Comparable<Iris> {
 	}
 
 	@Override
-	public int compareTo(Iris o) {
-		if (this.Petal_Length==o.Petal_Length && this.Petal_Width==o.Petal_Width && this.Sepal_Length==o.Sepal_Length && this.Sepal_Width==o.Sepal_Width)
+	public int compareTo(Item obj) {
+		Iris iris = (Iris)obj;
+		if (this.Petal_Length==iris.Petal_Length && this.Petal_Width==iris.Petal_Width && this.Sepal_Length==iris.Sepal_Length && this.Sepal_Width==iris.Sepal_Width)
 			return 1;
 		else
 			return 0;
 	}
 
+	@Override
+	public float distance(Item obj) {
+		Iris iris = (Iris)obj;
+		float distance = 0;
+		distance += Math.pow(this.Petal_Length-iris.Petal_Length,2);
+		distance += Math.pow(this.Petal_Width-iris.Petal_Width,2);
+		distance += Math.pow(this.Sepal_Length-iris.Sepal_Length,2);
+		distance += Math.pow(this.Sepal_Width-iris.Sepal_Width,2);
+		return distance;
+	}
+
+	@Override
+	public Item mean(ArrayList<Item> clusterMembers) {
+		int size = clusterMembers.size();
+		float sepal_Length = 0;
+		float sepal_Width = 0;
+		float petal_Length = 0;
+		float petal_Width = 0;
+		for (Item item: clusterMembers){
+			Iris iris = (Iris)item;
+			sepal_Length += iris.Sepal_Length;
+			sepal_Width += iris.Sepal_Width;
+			petal_Length += iris.Petal_Length;
+			petal_Width += iris.Petal_Width;
+		}
+		return new Iris(sepal_Length/size,sepal_Width/size,petal_Length/size,petal_Width/size,"");
+	}
+	
+	@Override
+	public String analyzeClusters(ArrayList<KMeanCluster> clusters, int k){
+		String result = "";
+		for (int i = 0; i<k; i++){
+			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;
+			int size = clusterMembers.size();
+			float Iris_setosaCnt = 0;
+			float Iris_versicolorCnt = 0;
+			float Iris_virginicaCnt = 0;
+			for (Item item: clusterMembers){
+				Iris iris = (Iris)item;
+				if(iris.Class.equals(IrisClass.Iris_setosa))
+					Iris_setosaCnt++;
+				else if(iris.Class.equals(IrisClass.Iris_versicolor))
+					Iris_versicolorCnt++;
+				else if(iris.Class.equals(IrisClass.Iris_virginica))
+					Iris_virginicaCnt++;
+			}
+			result += "\n=========================================\nCluster "+(i+1)+"\nIris-setosa: "+Iris_setosaCnt/size*100+"\nIris-versicolor: "+Iris_versicolorCnt/size*100+"\nIris-virginica: "+Iris_virginicaCnt/size*100;
+		}
+		return result;
+	}
 
 }
