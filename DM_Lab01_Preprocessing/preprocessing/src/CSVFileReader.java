@@ -67,7 +67,7 @@ public class CSVFileReader {
 		try {
 			String[][] data = read("Data_Mining_Student_DataSet_Spring_2013_Fixed.csv", false);
 			System.out.println("lines total: " + data.length);
-			DataCleaner dataCleaner = new DataCleaner();
+			IDataCleaner dataCleaner = new DataCleaner_Survey2013();
 			DataReader dataReader = new DataReader();
 			
 			//data = dataReader.getData(data,0,25, DataReader.Operator.GREATERTHAN);
@@ -75,27 +75,13 @@ public class CSVFileReader {
 			//System.out.println("lines: " + data.length);
 			//String[] values = dataCleaner.getValues(data, 5, 1);
 			
+			int counter = 0;
 			for (String[] line : data) {
-				System.out.println(Arrays.toString(line));
+				System.out.println("Line "+counter+": "+Arrays.toString(line));
+				counter++;
 			}
-			/*for (String value : values) {
-				System.out.println(value);
-			}*/
 			
-			System.out.println("---------------------------------");
-			System.out.println("ANIMAL COLUMN");
-			String pattern = "^(Asparagus|Elephant|Zebra){1}\\W*$";
-			data = dataCleaner.cleanStringValues(pattern, data, 7);
-			
-			System.out.println("---------------------------------");
-			System.out.println("OS COLUMN");
-			pattern = "^(Windows(\\s|\\W|\\d)*|(MAC )*OSX|(Linux|Ubuntu|\\W)+){1}$";
-			data = dataCleaner.cleanStringValues(pattern, data, 4);
-			
-			System.out.println("---------------------------------");
-			System.out.println("PROGRAMMING LANGUAGES COLUMN");
-			pattern = dataCleaner.createPattern(dataCleaner.getValues(data, 5, 0));
-			data = dataCleaner.cleanStringArrayValues(pattern, data, 5);
+			dataCleaner.clean(data);
 			
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());

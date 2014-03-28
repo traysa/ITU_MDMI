@@ -1,0 +1,43 @@
+
+public class DataCleaner_Survey2013 extends DataCleaning implements IDataCleaner{
+
+	public DataCleaner_Survey2013(){}
+	
+	public void clean(String[][] data){
+		String pattern = "";
+		
+		System.out.println("---------------------------------");
+		System.out.println("OS COLUMN");
+		pattern = "^(Windows(\\s|\\W|\\d)*|(MAC )*OSX|(Linux|Ubuntu|\\W)+){1}$";
+		data = this.cleanStringValues(pattern, data, 4);
+		
+		System.out.println("---------------------------------");
+		System.out.println("PROGRAMMING LANGUAGES COLUMN");
+		String[] values = this.getValues(data, 5, 0);
+		pattern = this.createPattern(values);
+		data = this.cleanStringArrayValues(pattern, data, 5);
+		
+		System.out.println("---------------------------------");
+		System.out.println("ANIMAL COLUMN");
+		pattern = "^(Asparagus|Elephant|Zebra).*$";
+		data = this.cleanStringValues(pattern, data, 7);
+		
+		System.out.println("---------------------------------");
+		System.out.println("MOUNTAIN");
+		pattern = "^(Yes|No).*$";
+		data = this.cleanStringValues(pattern, data, 8);
+		
+		System.out.println("---------------------------------");
+		System.out.println("WINTER");
+		pattern = "^(Yes|No).*$|(\\(yes\\))";
+		data = this.cleanStringValues(pattern, data, 9);
+	}
+	
+	public String specialCleaning(String text){
+		text = text.toUpperCase();
+		text = text.replace("C #", "C#");
+		text = text.replace("OBJ-C", "OBJECTIVE-C");
+		return text;
+	}
+	
+}

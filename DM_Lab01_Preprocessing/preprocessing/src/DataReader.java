@@ -8,8 +8,6 @@ public class DataReader {
 	    LESSTHAN, GREATERTHAN, EQUALS, CONTAINS
 	}
 	
-	
-	
 	public String[][] getData(String[][] data, String value, Operator operator){
 		List<String[]> selection = new ArrayList<String[]>();
 		for (String[] line : data) {

@@ -1,0 +1,6 @@
+
+public interface DataCleaner {
+	
+	String specialCleaning(String text){}
+
+}

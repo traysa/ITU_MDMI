@@ -1,0 +1,11 @@
+
+public class DataCleaner_Survey2013 extends DataCleaner{
+
+	private String specialCleaning(String text){
+		text = text.toUpperCase();
+		text = text.replace("C #", "C#");
+		text = text.replace("OBJ-C", "OBJECTIVE-C");
+		return text;
+	}
+	
+}
