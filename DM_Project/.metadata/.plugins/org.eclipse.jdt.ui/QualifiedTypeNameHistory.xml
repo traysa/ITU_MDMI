@@ -10,4 +10,11 @@
 <fullyQualifiedTypeName name="supervisedLearning.data.Class_Label"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFrame"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
+<fullyQualifiedTypeName name="clustering.data.Survey2014"/>
 </qualifiedTypeNameHistroy>

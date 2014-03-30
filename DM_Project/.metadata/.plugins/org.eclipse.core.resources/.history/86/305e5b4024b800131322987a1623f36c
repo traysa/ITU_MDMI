@@ -1,0 +1,204 @@
+package clustering.data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import clustering.kMean.KMeanCluster;
+import data.DataResolver;
+import data.FavAnimal;
+import data.FavColor;
+import data.FavSQLServ;
+import data.OS;
+import data.ProgLangs;
+
+
+public class Survey2014 implements Item {
+
+	/**
+	 * The attribute to built a classifier for.
+	 */
+//	private Object s2014_Class;
+	private float s2014_age;
+	private float s2014_prog_skill;
+	private float s2014_uni_yrs;
+//	private OS s2014_os;
+//	private ProgLangs s2014_progLangs;
+	private float s2014_engSkill;
+//	private FavAnimal s2014_favAnimal;
+//	private Boolean s2014_MoreMtns;
+//	private Boolean s2014_winter;
+//	private FavColor s2014_favColor;
+//	private Boolean s2014_neuralNetwork;
+//	private Boolean s2014_vectorMachine;
+//	private Boolean s2014_sql;
+//	private FavSQLServ s2014_favSQLServ;
+//	private Boolean s2014_apriori;
+	
+	public Survey2014(Integer s2014_age, float s2014_prog_skill, float s2014_uni_yrs, OS s2014_os, ProgLangs s2014_progLangs, float s2014_engSkill,
+			FavAnimal s2014_favAnimal, Boolean s2014_MoreMtns, Boolean s2014_winter, FavColor s2014_favColor, Boolean s2014_neuralNetwork, Boolean s2014_vectorMachine,
+			Boolean s2014_sql, FavSQLServ s2014_favSQLServ, Boolean s2014_apriori, String s2014_Class)
+	{
+		this(s2014_age, s2014_prog_skill, s2014_uni_yrs, s2014_os, s2014_progLangs, s2014_engSkill, s2014_favAnimal, s2014_MoreMtns, s2014_winter, 
+				s2014_favColor, s2014_neuralNetwork, s2014_vectorMachine, s2014_sql, s2014_favSQLServ, s2014_apriori, DataResolver.resolveAnimal(s2014_Class));
+	}
+	
+	public Survey2014(Integer s2014_age, float s2014_prog_skill, float s2014_uni_yrs, OS s2014_os, ProgLangs s2014_progLangs, float s2014_engSkill,
+			FavAnimal s2014_favAnimal, Boolean s2014_MoreMtns, Boolean s2014_winter, FavColor s2014_favColor, Boolean s2014_neuralNetwork, Boolean s2014_vectorMachine,
+			Boolean s2014_sql, FavSQLServ s2014_favSQLServ, Boolean s2014_apriori, Object s2014_Class)
+	{
+//		this.s2014_Class = s2014_Class;
+		this.s2014_age = s2014_age;
+		this.s2014_prog_skill = s2014_prog_skill;
+		this.s2014_uni_yrs = s2014_uni_yrs;
+//		this.s2014_os = s2014_os;
+//		this.s2014_progLangs = s2014_progLangs;
+		this.s2014_engSkill = s2014_engSkill;
+//		this.s2014_favAnimal = s2014_favAnimal;
+//		this.s2014_MoreMtns = s2014_MoreMtns;
+//		this.s2014_winter = s2014_winter;
+//		this.s2014_favColor = s2014_favColor;
+//		this.s2014_neuralNetwork = s2014_neuralNetwork;
+//		this.s2014_vectorMachine = s2014_vectorMachine;
+//		this.s2014_sql = s2014_sql;
+//		this.s2014_favSQLServ = s2014_favSQLServ;
+//		this.s2014_apriori = s2014_apriori;
+	}
+	
+	public Survey2014(float s2014_age, float s2014_prog_skill, float s2014_uni_yrs, float s2014_engSkill)
+	{
+		this.s2014_age = s2014_age;
+		this.s2014_prog_skill = s2014_prog_skill;
+		this.s2014_uni_yrs = s2014_uni_yrs;
+		this.s2014_engSkill = s2014_engSkill;
+	}
+	
+	@Override
+	public String toString() {
+		String result = "Survey2014 Object -->"+
+				" | Age = " + this.s2014_age + 
+				" | Prog_Skill = "+this.s2014_prog_skill+
+				" | Uni_yrs = "+this.s2014_uni_yrs + 
+//				" | OS = "+this.s2014_os + 
+//				" | ProgLangs = "+this.s2014_progLangs + 
+				" | EngSkills = "+this.s2014_engSkill //+ 
+//				" | FavAnimal = "+this.s2014_favAnimal + 
+//				" | MoreMnts = "+this.s2014_MoreMtns + 
+//				" | Winter = "+this.s2014_winter + 
+//				" | FavColor = "+this.s2014_favColor + 
+//				" | NeuralNetwork = "+this.s2014_neuralNetwork + 
+//				" | VectorMachine = "+this.s2014_vectorMachine + 
+//				" | SQL = "+this.s2014_sql + 
+//				" | FavSQLServ = "+this.s2014_favSQLServ + 
+//				" | Apriori = "+this.s2014_apriori + 
+//				" | Class = "+this.s2014_Class
+				;
+		return result;
+	}
+
+	@Override
+	public int compareTo(Item obj) {
+		Survey2014 survey2014_obj = (Survey2014)obj;
+		if (
+//				this.s2014_age.equals(survey2014_obj.s2014_age) && 
+				this.s2014_prog_skill==survey2014_obj.s2014_prog_skill && 
+				this.s2014_uni_yrs==survey2014_obj.s2014_uni_yrs //&& 
+//				this.s2014_os.equals(survey2014_obj.s2014_os) && 
+//				this.s2014_progLangs.equals(survey2014_obj.s2014_progLangs) && 
+//				this.s2014_engSkill==survey2014_obj.s2014_engSkill && 
+//				this.s2014_favAnimal.equals(survey2014_obj.s2014_favAnimal) && 
+//				this.s2014_MoreMtns.equals(survey2014_obj.s2014_MoreMtns) && 
+//				this.s2014_winter.equals(survey2014_obj.s2014_winter) && 
+//				this.s2014_favColor.equals(survey2014_obj.s2014_favColor) && 
+//				this.s2014_vectorMachine.equals(survey2014_obj.s2014_vectorMachine) && 
+//				this.s2014_sql.equals(survey2014_obj.s2014_sql) && 
+//				this.s2014_favSQLServ.equals(survey2014_obj.s2014_favSQLServ) && 
+//				this.s2014_apriori.equals(survey2014_obj.s2014_apriori)
+				)
+			return 1;
+		else
+			return 0;
+	}
+
+	@Override
+	public float distance(Item obj) {
+		Survey2014 survey2014_obj = (Survey2014)obj;
+		float distance = 0;
+		distance += Math.pow(this.s2014_prog_skill-survey2014_obj.s2014_prog_skill,2);
+		distance += Math.pow(this.s2014_uni_yrs-survey2014_obj.s2014_uni_yrs,2);
+//		distance += Math.pow(this.s2014_engSkill-survey2014_obj.s2014_engSkill,2);
+		return distance;
+	}
+
+	@Override
+	public Item mean(ArrayList<Item> clusterMembers) {
+		int size = clusterMembers.size();
+		float s2014_age = 0;
+		float s2014_prog_skill = 0;
+		float s2014_uni_yrs = 0;
+		float s2014_engSkill = 0;
+		for (Item item: clusterMembers){
+			Survey2014 survey2014_obj = (Survey2014)item;
+			s2014_age += survey2014_obj.s2014_age;
+			s2014_prog_skill += survey2014_obj.s2014_prog_skill;
+			s2014_uni_yrs += survey2014_obj.s2014_uni_yrs;
+			s2014_engSkill += survey2014_obj.s2014_engSkill;
+		}
+		return new Survey2014(s2014_age/size,s2014_prog_skill/size,s2014_uni_yrs/size,s2014_engSkill/size);
+	}
+	
+	@Override
+	public String analyzeClusters(ArrayList<KMeanCluster> clusters, int k){
+		String result = "";
+		for (int i = 0; i<k; i++){
+			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;
+			int size = clusterMembers.size();
+			HashMap<Object,Float> counters_Age = new HashMap<Object,Float>();
+			HashMap<Object,Float> counters_Prog_skill = new HashMap<Object,Float>();
+			HashMap<Object,Float> counters_Uni_yrs = new HashMap<Object,Float>();
+			HashMap<Object,Float> counters_EngSkill = new HashMap<Object,Float>();
+			for (Item item: clusterMembers){
+				Survey2014 survey2014_obj = (Survey2014)item;
+				if (counters_Age.containsKey(survey2014_obj.s2014_age)){
+					counters_Age.put(survey2014_obj.s2014_age,counters_Age.get(survey2014_obj.s2014_age)+1);
+				} else
+					counters_Age.put(survey2014_obj.s2014_age,(float) 0);
+				
+				if (counters_Prog_skill.containsKey(survey2014_obj.s2014_prog_skill)){
+					counters_Prog_skill.put(survey2014_obj.s2014_prog_skill,counters_Prog_skill.get(survey2014_obj.s2014_prog_skill)+1);
+				} else
+					counters_Prog_skill.put(survey2014_obj.s2014_prog_skill,(float) 0);
+				
+				if (counters_Uni_yrs.containsKey(survey2014_obj.s2014_uni_yrs)){
+					counters_Uni_yrs.put(survey2014_obj.s2014_uni_yrs,counters_Uni_yrs.get(survey2014_obj.s2014_uni_yrs)+1);
+				} else
+					counters_Uni_yrs.put(survey2014_obj.s2014_uni_yrs,(float) 0);
+				
+				if (counters_EngSkill.containsKey(survey2014_obj.s2014_engSkill)){
+					counters_EngSkill.put(survey2014_obj.s2014_engSkill,counters_EngSkill.get(survey2014_obj.s2014_engSkill)+1);
+				} else
+					counters_EngSkill.put(survey2014_obj.s2014_engSkill,(float) 0);
+					
+			}
+			result += "\n=========================================";
+			result += "\nCluster "+(i+1);
+			for (Object counter : counters_Age.keySet()){
+				if (counters_Age.get(counter)/size*100 > 0)
+					result += "\nAge "+counter.toString()+": "+counters_Age.get(counter)/size*100+"%";
+			}
+			for (Object counter : counters_Prog_skill.keySet()){
+				if (counters_Prog_skill.get(counter)/size*100 > 0)
+					result += "\nProg_skill "+counter.toString()+": "+counters_Prog_skill.get(counter)/size*100+"%";
+			}
+			for (Object counter : counters_Uni_yrs.keySet()){
+				if (counters_Uni_yrs.get(counter)/size*100 > 0)
+					result += "\nUni_yrs "+counter.toString()+": "+counters_Uni_yrs.get(counter)/size*100+"%";
+			}
+			for (Object counter : counters_EngSkill.keySet()){
+				if (counters_EngSkill.get(counter)/size*100 > 0)
+					result += "\nEngSkill "+counter.toString()+": "+counters_EngSkill.get(counter)/size*100+"%";
+			}
+		}
+		return result;
+	}
+
+}

@@ -49,7 +49,7 @@ public class Apriori {
         	System.out.println(itemset + " = " + frequentItemSets.get(itemset));
         }
         
-        ArrayList<AssociationRule> associationRules = apriori.createAssociationRules(frequentItemSets, confidenceThreshold);
+        ArrayList<AssociationRule> associationRules = apriori.createAssociationRules(frequentItemSets, confidenceThreshold, TRANSACTIONS.length);
         System.out.println("\nASSOCIATION RULES:");
         for(AssociationRule rule: associationRules){
         	System.out.println(rule);
@@ -63,7 +63,7 @@ public class Apriori {
      * @param confidenceThreshold Minimum confidence
      * @return List of association rules, which satisfy the minimum confidence
      */
-    public ArrayList<AssociationRule> createAssociationRules(Hashtable<ItemSet,Integer> frequentItemSets, double confidenceThreshold){
+    public ArrayList<AssociationRule> createAssociationRules(Hashtable<ItemSet,Integer> frequentItemSets, double confidenceThreshold, int transactionCnt){
     	ArrayList<AssociationRule> result = new ArrayList<AssociationRule>();
     	// Find association rules in every frequent itemset
         for (ItemSet itemSetAB : frequentItemSets.keySet()){
@@ -76,7 +76,7 @@ public class Apriori {
 	        			   // ItemSet B has to be a nonempty subset of AB
 	        			   if (setAB.removeAll(setB)){
 	        				   ItemSet itemSetA = new ItemSet(setAB.toArray(new Integer[setAB.size()]));
-	        				   AssociationRule rule = new AssociationRule(itemSetAB,frequentItemSets.get(itemSetAB),itemSetA,frequentItemSets.get(itemSetA),itemSetB,frequentItemSets.get(itemSetB));
+	        				   AssociationRule rule = new AssociationRule(itemSetAB,frequentItemSets.get(itemSetAB),itemSetA,frequentItemSets.get(itemSetA),itemSetB,frequentItemSets.get(itemSetB),transactionCnt);
 	        				   if (rule.confidence > confidenceThreshold){
 	        					   result.add(rule);
 	        				   }
