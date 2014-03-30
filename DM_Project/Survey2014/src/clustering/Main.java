@@ -1,0 +1,26 @@
+package clustering;
+
+import java.util.ArrayList;
+
+import clustering.kMean.KMeanCluster;
+import clustering.kMean.KMeans;
+import clustering.data.*;
+
+public class Main {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		//First step load in iris data
+		ArrayList<Item> irisData = DataLoader.LoadAllDataFromCSV("iris.csv");
+		System.out.println(irisData);
+		
+		//Second step --> do the clustering using k-means!
+		ArrayList<KMeanCluster> FoundClusters_KMeans = KMeans.KMeansPartition(3, irisData);
+		
+		//Third step --> do the clustering using k-medoids!
+		//ArrayList<KMedoidCluster> FoundClusters_KMedoids = KMedoid.KMedoidPartition(3, irisData);
+	}
+
+}

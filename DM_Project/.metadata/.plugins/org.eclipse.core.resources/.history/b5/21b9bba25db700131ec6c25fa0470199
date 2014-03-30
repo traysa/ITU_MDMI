@@ -1,0 +1,15 @@
+package supervisedLearning.data;
+
+public enum progLangs {
+	CSharp,
+	PHP,
+	Java,
+	Javascript,
+	Python,
+	CPlusPlus,
+	C,
+	OBJC,
+	RUBY,
+	FSharp,
+	Scala
+}

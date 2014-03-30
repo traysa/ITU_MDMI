@@ -1,0 +1,44 @@
+package clustering.data;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class DataLoader {
+
+	/**
+	 * @param args
+	 */
+	public static ArrayList<Item> LoadAllDataFromCSV(String filename) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		
+		try {
+			String[][] dataOrig = CSVFileReader.readDataFile(filename,",","",true);
+			data = LoadAllData(dataOrig);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public static ArrayList<Item> LoadAllData(String[][] dataOrig) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		for(int i = 0; i < dataOrig.length; i++)
+		{
+			float sepal_length = Float.parseFloat(dataOrig[i][0]);
+			float sepal_width = Float.parseFloat(dataOrig[i][1]);
+			float petal_length = Float.parseFloat(dataOrig[i][2]);
+			float petal_width = Float.parseFloat(dataOrig[i][3]);
+			
+			String s2014_class = dataOrig[i][4];
+			data.add(new Iris(sepal_length, sepal_width, petal_length, petal_width, s2014_class));				
+		}
+
+		return data;
+	}
+}

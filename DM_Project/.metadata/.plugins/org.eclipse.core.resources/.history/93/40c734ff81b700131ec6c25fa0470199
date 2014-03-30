@@ -1,0 +1,12 @@
+package supervisedLearning.data;
+
+import supervisedLearning.id3.iClass_Label;
+
+public enum FavColor implements iClass_Label{
+	Blue,
+	Red,
+	Green,
+	Yellow,
+	Black,
+	Orange
+}

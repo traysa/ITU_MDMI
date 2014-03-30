@@ -1,0 +1,7 @@
+package supervisedLearning.data;
+
+public enum FavAnimal {
+	Zebra,
+	Elephant,
+	Asparagus
+}

@@ -1,0 +1,128 @@
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class DataCleaner_Survey2014 extends DataCleaning implements IDataCleaner{
+
+	public DataCleaner_Survey2014(){}
+	
+	public void clean(String[][] data){
+		String pattern = "";
+		String[] values = null;
+		HashMap<String, String> normalizationPatterns = null;
+		
+		System.out.println("---------------------------------");
+		System.out.println("0 AGE");
+		pattern = "^[0-9]*$";
+		data = this.cleanStringValues(pattern, data, 0);
+		
+		System.out.println("---------------------------------");
+		System.out.println("1 PROGAMMER SKILL [1-10]");
+		pattern = "^(1|2|3|4|5|6|7|8|9|10)$";
+		data = this.cleanStringValues(pattern, data, 1);
+		
+		System.out.println("---------------------------------");
+		System.out.println("2 YEARS OF STUDY");
+		pattern = "^[0-9]*(\\.|,){0,1}[0-9]*$";
+		data = this.cleanStringValues(pattern, data, 2);
+		
+		System.out.println("---------------------------------");
+		System.out.println("3 OS");
+		values = this.getValues(data, 3, 0, ",|\\(|\\)");
+		pattern = this.createPattern(values);
+		pattern = "^(((MAC)?(\\s)?(OS)?(\\s)?(X)?)|((Windows|Win)(\\s)?(7|XP)?)|(Linux(\\sMint)?)|(Ubuntu)|(Debian)|(Chrome OS))$";
+		normalizationPatterns = new HashMap<String,String>(){{
+			put("^((MAC)?(\\s)?(OS)?(\\s)?(X)?)$", "MAC OSX");
+			put("^((Windows|Win)(\\s)?(7|XP)?)$", "Windows");
+			put("^((Linux(\\sMint)?)|(Ubuntu)|(Debian))$", "Linux");
+	    }};
+		data = this.cleanStringValues(data, 3, normalizationPatterns);
+		
+		System.out.println("---------------------------------");
+		System.out.println("4 PROGRAMMING LANGUAGES COLUMN");
+		values = this.getValues(data, 4, 3, ",|\\s");
+		pattern = this.createPattern(values);
+		data = this.cleanStringArrayValues(pattern, data, 4, ",|\\s");
+		
+		System.out.println("---------------------------------");
+		System.out.println("5 ENGLISH SPEAKER [45-69]");
+		pattern = "^(45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69)$";
+		data = this.cleanStringValues(pattern, data, 5);
+		
+		System.out.println("---------------------------------");
+		System.out.println("6 ANIMAL COLUMN");
+		pattern = "^(Asparagus|Elephant|Zebra){1}$";
+		data = this.cleanStringValues(pattern, data, 6);
+		
+		System.out.println("---------------------------------");
+		System.out.println("7 MORE MOUNTAINS");
+		pattern = "^(Yes|No).?$";
+		data = this.cleanStringValues(pattern, data, 7);
+		
+		System.out.println("---------------------------------");
+		System.out.println("8 FED UP WITH WINTER");
+		pattern = "^(Yes|No).?$";
+		data = this.cleanStringValues(pattern, data, 8);
+		
+//		System.out.println("---------------------------------");
+//		System.out.println("9 RANDOM NUMBER [1-10]");
+//		pattern = "^(1|2|3|4|5|6|7|8|9|10)$";
+//		data = this.cleanStringValues(pattern, data, 9);
+//		
+//		System.out.println("---------------------------------");
+//		System.out.println("10 RANDOM REAL [0-1]");
+//		pattern = "^[0-9]*(\\.|,){0,1}[0-9]*$";
+//		data = this.cleanStringValues(pattern, data, 10);
+//		
+//		System.out.println("---------------------------------");
+//		System.out.println("11 RANDOM REAL [0-1]");
+//		pattern = "^[0-9]*(\\.|,){0,1}[0-9]*$";
+//		data = this.cleanStringValues(pattern, data, 11);
+		
+		System.out.println("---------------------------------");
+		System.out.println("13 FAVOURITE COLOR");
+		values = this.getValues(data, 13, 2, ",");
+		pattern = this.createPattern(values);
+		//pattern = "^(WHITE|BLACK|RED|GREEN|YELLOW|BLUE|PURPLE|BROWN|GREY|ORANGE|PINK|GOLD)$";
+		data = this.cleanStringValues(pattern, data, 13);
+
+		System.out.println("---------------------------------");
+		System.out.println("14 NEURAL NETWORK KNOWN");
+		pattern = "^(Yes|No).?$";
+		data = this.cleanStringValues(pattern, data, 14);
+		
+		System.out.println("---------------------------------");
+		System.out.println("15 SUPPORT VECTOR MACHINE KNOWN");
+		pattern = "^(Yes|No).?$";
+		data = this.cleanStringValues(pattern, data, 15);
+		
+		System.out.println("---------------------------------");
+		System.out.println("16 SQL KNOWN");
+		pattern = "^(Yes|No).?$";
+		data = this.cleanStringValues(pattern, data, 16);
+		
+		System.out.println("---------------------------------");
+		System.out.println("17 FAVOURITE SQL SERVER");
+		values = this.getValues(data, 17, 2, ",");
+		pattern = this.createPattern(values);
+		normalizationPatterns = new HashMap<String,String>(){{
+			put("^(MS(\\s)?(SQL)?|((MICROSOFT|WINDOWS)\\s)?SQL(\\sSERVER)?(\\s[0-9]*)?|Microsoft|MSQL).?$", "MSSQL");
+			put("^(MYSQL(\\s[0-9](\\.[0-9])?)?).?$", "MYSQL");
+			put("^(POSTGRES|POSTGRESQL).?$", "POSTGRESQL");
+			put("^(Oracle(\\sSQL)?).?$", "ORACLE");
+	    }};
+		data = this.cleanStringValues(data, 17, normalizationPatterns);
+	}
+	
+	public String specialCleaning(String text){
+		text = text.toUpperCase();
+		text = text.replaceAll("OBJECTIVE\\sC|OBJ\\-C", "OBJECTIVE-C");
+		text = text.replaceAll("JS", "JAVASCRIPT");
+//		text = text.replaceAll("MSSQL|MICROSOFT SQL SERVER|MS-SQL|SQL SERVER 2012|MS SQL 2008 122", "MS SQL");
+//		text = text.replace("MY SQL", "MYSQL");
+//		text = text.replaceAll("^(PORTGRES|POSTGRES)$", "POSTGRESQL");
+//		text = text.replaceAll("ORACLE XE", "ORACLE");
+		return text;
+	}
+	
+}

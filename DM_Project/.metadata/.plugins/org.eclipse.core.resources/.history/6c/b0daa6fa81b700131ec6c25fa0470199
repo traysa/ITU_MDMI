@@ -1,0 +1,9 @@
+package supervisedLearning.data;
+
+import supervisedLearning.id3.iClass_Label;
+
+public enum FavAnimal implements iClass_Label{
+	Zebra,
+	Elephant,
+	Asparagus
+}

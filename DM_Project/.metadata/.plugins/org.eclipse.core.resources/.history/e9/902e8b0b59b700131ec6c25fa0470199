@@ -1,0 +1,4 @@
+package supervisedLearning.data;
+
+public enum Age {
+}

@@ -1,0 +1,10 @@
+package supervisedLearning.data;
+
+public enum FavColor {
+	Blue,
+	Red,
+	Green,
+	Yellow,
+	Black,
+	Orange
+}

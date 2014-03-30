@@ -1,0 +1,8 @@
+
+public interface IDataCleaner {
+	
+	public String[][] clean(String[][] data);
+
+	public String[][] reduction(int i);
+
+}

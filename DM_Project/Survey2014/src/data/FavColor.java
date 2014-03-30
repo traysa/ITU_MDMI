@@ -1,0 +1,11 @@
+package data;
+
+public enum FavColor{
+	Blue,
+	Red,
+	Green,
+	Yellow,
+	Black,
+	Orange,
+	Not_defined
+}

@@ -1,0 +1,202 @@
+package supervisedLearning.data;
+
+import supervisedLearning.CSVFileReader;
+import supervisedLearning.id3.ID3Object;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * The DataManager class is used to convert the string data loaded in from the text file
+ * to Mushroom objects.
+ * The DataManager class makes use of the CSVFileReader class to accomplish this.
+ *
+ */
+public class DataManager_Survey2014 {
+	
+	public static ArrayList<ID3Object> LoadData() {
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		try {
+			String[][] data = CSVFileReader.readDataFile("survey2014_preprocessed.txt", ",","", false);
+			datalist = LoadData(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return datalist;
+	}
+	
+	public static ArrayList<ID3Object> LoadData(String[][] data)
+	{
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		for(int i = 0; i < data.length; i++)
+		{
+			Class_Label classlabel = loadSurvey2014Class(data[i][14]);
+			if (classlabel!=null){
+				Survey2014 entryToAdd = new Survey2014();
+				entryToAdd.setClasslabel(classlabel);
+				entryToAdd.s2014_age = loadInteger(data[i][0]);
+//				entryToAdd.s2014_prog_skill = loadInteger(data[i][1]);
+				entryToAdd.s2014_uni_yrs = loadDouble(data[i][2].replace(",","."));
+//				entryToAdd.s2014_os = loadOS(data[i][3]);
+//				entryToAdd.s2014_progLangs = loadProgLangs(data[i][4]);
+//				entryToAdd.s2014_engSkill = loadInteger(data[i][5]);
+//				entryToAdd.s2014_favAnimal = loadAnimal(data[i][6]);
+//				entryToAdd.s2014_MoreMtns = loadBoolean(data[i][7]);
+//				entryToAdd.s2014_winter = loadBoolean(data[i][8]);
+//				entryToAdd.s2014_favColor = loadColor(data[i][13]);
+//				entryToAdd.s2014_neuralNetwork = loadBoolean(data[i][14]);
+//				entryToAdd.s2014_vectorMachine = loadBoolean(data[i][15]);
+//				entryToAdd.s2014_sql = loadBoolean(data[i][16]);
+//				entryToAdd.s2014_favSQLServ = loadSQLServ(data[i][17]);
+//				entryToAdd.s2014_apriori = loadBoolean(data[i][18]);
+				
+				datalist.add(entryToAdd);
+			}
+		}			
+		
+		return datalist;
+		
+	}
+	
+	private static Class_Label loadSurvey2014Class(String s2014_class)
+	{
+		if(s2014_class.toUpperCase().equals("YES"))
+			return Class_Label.yes;
+		else if(s2014_class.toUpperCase().equals("NO"))
+			return Class_Label.no;
+		return null;
+	}
+	
+	private static Double loadDouble(String doubleVal){
+		try {
+			return Double.parseDouble(doubleVal);
+		} catch(Exception ex){
+			return null;
+		}
+	}
+	
+	private static Integer loadInteger(String intVal){
+		try {
+			return Integer.parseInt(intVal);
+		} catch(Exception ex){
+			return null;
+		}
+	}
+	
+	private static Boolean loadBoolean(String boolVal){
+		if(boolVal.toUpperCase().equals("YES"))
+			return true;
+		else if(boolVal.toUpperCase().equals("NO"))
+			return false;
+		return null;
+	}
+	
+	private static FavSQLServ loadSQLServ(String favSqlServ)
+	{
+		if(favSqlServ.toUpperCase().equals("MSSQL"))
+			return FavSQLServ.MSSQL;
+		else if(favSqlServ.toUpperCase().equals("MYSQL"))
+			return FavSQLServ.MySQL;
+		else if(favSqlServ.toUpperCase().equals("ORACLE"))
+			return FavSQLServ.Oracle;
+		else if(favSqlServ.toUpperCase().equals("POSTGRESQL"))
+			return FavSQLServ.PostgreSQL;
+		return null;
+	}
+	
+	private static FavColor loadColor(String favColor)
+	{
+		if(favColor.toUpperCase().equals("BLUE"))
+			return FavColor.Blue;
+		else if(favColor.toUpperCase().equals("GREEN"))
+			return FavColor.Green;
+		else if(favColor.toUpperCase().equals("RED"))
+			return FavColor.Red;
+		else if(favColor.toUpperCase().equals("YELLOW"))
+			return FavColor.Yellow;
+		else if(favColor.toUpperCase().equals("BLACK"))
+			return FavColor.Black;
+		else if(favColor.toUpperCase().equals("ORANGE"))
+			return FavColor.Orange;
+		return null;
+	}
+	
+	private static FavAnimal loadAnimal(String favAnimal)
+	{
+		if(favAnimal.toUpperCase().equals("ZEBRA"))
+			return FavAnimal.Zebra;
+		else if(favAnimal.toUpperCase().equals("ELEPHANT"))
+			return FavAnimal.Elephant;
+		else if(favAnimal.toUpperCase().equals("ASPARAGUS"))
+			return FavAnimal.Asparagus;
+		return null;
+	}
+	
+	private static OS loadOS(String os)
+	{
+		if(os.toUpperCase().equals("OSX"))
+			return OS.OSX;
+		else if(os.toUpperCase().equals("WINDOWS"))
+			return OS.Windows;
+		else if(os.toUpperCase().equals("LINUX"))
+			return OS.Linux;
+		return null;
+	}
+
+	private static ProgLangs loadProgLangs(String progLangs)
+	{
+		if(progLangs.equals("C#"))
+			return ProgLangs.CSharp;
+		else if(progLangs.equals("C++"))
+			return ProgLangs.CPlusPlus;
+		else if(progLangs.equals("C"))
+			return ProgLangs.C;
+		else if(progLangs.equals("Java"))
+			return ProgLangs.Java;
+		else if(progLangs.equals("Javascript"))
+			return ProgLangs.Javascript;
+		else if(progLangs.equals("F#"))
+			return ProgLangs.FSharp;
+		else if(progLangs.equals("OBJECTIVE-C"))
+			return ProgLangs.OBJC;
+		else if(progLangs.equals("PHP"))
+			return ProgLangs.PHP;
+		else if(progLangs.equals("Python"))
+			return ProgLangs.Python;
+		else if(progLangs.equals("RUBY"))
+			return ProgLangs.RUBY;
+		else if(progLangs.equals("Scala"))
+			return ProgLangs.Scala;
+		return null;
+	}
+	
+
+	/**
+	 * Method which might be helpful for calculating information gain. Counts the number of
+	 * a specific Class label (e.g. poison or edible) appears in given data, when a specific Attribute has a specific value.
+	 * The method assumes that the attribute is nominal.
+	 * @param Data
+	 * @param Attribute Attribute we are calculating information gain for
+	 * @param AttributeValue What value of the attribute
+	 * @param Classification
+	 * @return
+	 * @throws Exception 
+	 */
+	public static int CountClassInstancesBasedOnAttributeValue(ArrayList<ID3Object> Data, Object Attribute, Object AttributeValue, Object Classification) throws Exception
+	{	
+		int count = 0;
+		for(ID3Object survey : Data)
+		{
+			if(survey.getAttributeValue(Attribute).equals(AttributeValue))
+			{
+				if(survey.getClasslabel().equals(Classification))
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+}

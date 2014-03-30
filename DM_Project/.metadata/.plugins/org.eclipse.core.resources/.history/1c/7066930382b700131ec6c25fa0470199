@@ -1,0 +1,10 @@
+package supervisedLearning.data;
+
+import supervisedLearning.id3.iClass_Label;
+
+public enum FavSQLServ implements iClass_Label{
+	MySQL,
+	MSSQL,
+	Oracle,
+	PostgreSQL
+}

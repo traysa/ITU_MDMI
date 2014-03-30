@@ -1,0 +1,17 @@
+package supervisedLearning.data;
+
+import supervisedLearning.id3.iClass_Label;
+
+public enum ProgLangs implements iClass_Label{
+	CSharp,
+	PHP,
+	Java,
+	Javascript,
+	Python,
+	CPlusPlus,
+	C,
+	OBJC,
+	RUBY,
+	FSharp,
+	Scala
+}

@@ -1,0 +1,96 @@
+package supervisedLearning.data;
+
+import supervisedLearning.CSVFileReader;
+import supervisedLearning.id3.ID3Object;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import data.DataResolver;
+import data.FavAnimal;
+import data.FavColor;
+import data.FavSQLServ;
+import data.OS;
+import data.ProgLangs;
+
+/**
+ * The DataManager class is used to convert the string data loaded in from the text file
+ * to Mushroom objects.
+ * The DataManager class makes use of the CSVFileReader class to accomplish this.
+ *
+ */
+public class DataManager_Survey2014 {
+	
+	public static ArrayList<ID3Object> LoadDataFromFile(String filename) {
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		try {
+			String[][] data = CSVFileReader.readDataFile(filename, ",","", false);
+			datalist = LoadData(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return datalist;
+	}
+	
+	public static ArrayList<ID3Object> LoadData(String[][] data)
+	{
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		for(int i = 0; i < data.length; i++)
+		{
+			Boolean classlabel = DataResolver.resolveBoolean(data[i][7]);
+			if (classlabel!=null){
+				Survey2014 entryToAdd = new Survey2014();
+				entryToAdd.setClasslabel(classlabel);
+//				entryToAdd.s2014_age = DataResolver.resolveInteger(data[i][0]);
+//				entryToAdd.s2014_prog_skill = DataResolver.resolveInteger(data[i][1]);
+//				entryToAdd.s2014_uni_yrs = DataResolver.resolveDouble(data[i][2].replace(",","."));
+//				entryToAdd.s2014_os = DataResolver.resolveOS(data[i][3]);
+//				entryToAdd.s2014_progLangs = DataResolver.resolveProgLangs(data[i][4]);
+//				entryToAdd.s2014_engSkill = DataResolver.resolveInteger(data[i][5]);
+//				entryToAdd.s2014_favAnimal = DataResolver.resolveAnimal(data[i][6]);
+//				entryToAdd.s2014_MoreMtns = DataResolver.resolveBoolean(data[i][7]);
+				entryToAdd.s2014_winter = DataResolver.resolveBoolean(data[i][8]);
+				entryToAdd.s2014_favColor = DataResolver.resolveColor(data[i][13]);
+//				entryToAdd.s2014_neuralNetwork = DataResolver.resolveBoolean(data[i][14]);
+//				entryToAdd.s2014_vectorMachine = DataResolver.resolveBoolean(data[i][15]);
+//				entryToAdd.s2014_sql = DataResolver.resolveBoolean(data[i][16]);
+//				entryToAdd.s2014_favSQLServ = DataResolver.resolveSQLServ(data[i][17]);
+//				entryToAdd.s2014_apriori = DataResolver.resolveBoolean(data[i][18]);
+				
+				datalist.add(entryToAdd);
+			}
+		}			
+		
+		return datalist;
+		
+	}
+	
+	/**
+	 * Method which might be helpful for calculating information gain. Counts the number of
+	 * a specific Class label (e.g. poison or edible) appears in given data, when a specific Attribute has a specific value.
+	 * The method assumes that the attribute is nominal.
+	 * @param Data
+	 * @param Attribute Attribute we are calculating information gain for
+	 * @param AttributeValue What value of the attribute
+	 * @param Classification
+	 * @return
+	 * @throws Exception 
+	 */
+	public static int CountClassInstancesBasedOnAttributeValue(ArrayList<ID3Object> Data, Object Attribute, Object AttributeValue, Object Classification) throws Exception
+	{	
+		int count = 0;
+		for(ID3Object survey : Data)
+		{
+			if(survey.getAttributeValue(Attribute).equals(AttributeValue))
+			{
+				if(survey.getClasslabel().equals(Classification))
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+}
