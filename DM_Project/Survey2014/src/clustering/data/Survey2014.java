@@ -2,6 +2,7 @@ package clustering.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -10,6 +11,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import clustering.kMean.KMeanCluster;
+import data.CSVFileReader;
 
 /**
  * Dataobject for clustering the survey 2014 on 
@@ -44,6 +46,7 @@ public class Survey2014 implements Item {
 	 * @return List of Survey2014 objects
 	 */
 	public static ArrayList<Item> LoadAllData(String[][] dataOrig) {
+		ArrayList<Integer> skippedData = new ArrayList<Integer>();
 		ArrayList<Item> data = new ArrayList<Item>();
 		for(int i = 0; i < dataOrig.length; i++)
 		{
@@ -52,9 +55,15 @@ public class Survey2014 implements Item {
 				float s2014_uni_yrs = Float.parseFloat(dataOrig[i][2].replace(",","."));
 				data.add(new Survey2014(s2014_prog_skill, s2014_uni_yrs));			
 			} catch(Exception ex){
-				System.out.println("Preprocessing: Datatupel ("+dataOrig[i]+") will be dropped: "+ex.getMessage());
+				skippedData.add(i);
 			}
 		}
+		
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("PREPROCESSING FOR KMEANS");
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("The following lines will be skipped due to incomplete data:\n"+skippedData.toString());
+		System.out.println("----------------------------------------------------------------");
 
 		return data;
 	}
@@ -115,8 +124,12 @@ public class Survey2014 implements Item {
 		return distance;
 	}
 
-	@Override
-	public Item mean(ArrayList<Item> clusterMembers) {
+	/**
+	 * Calculates the mean of a cluster of items
+	 * @param cluster
+	 * @return Mean
+	 */
+	public static Item mean(ArrayList<Item> clusterMembers) {
 		int size = clusterMembers.size();
 		float s2014_prog_skill = 0;
 		float s2014_uni_yrs = 0;
@@ -128,8 +141,12 @@ public class Survey2014 implements Item {
 		return new Survey2014(s2014_prog_skill/size,s2014_uni_yrs/size);
 	}
 	
-	@Override
-	public void drawChart(ArrayList<KMeanCluster> clusters, int k){
+	/**
+	 * Draws a chart of the values and clusters
+	 * @param clusters Clusters to consider
+	 * @param k Number of clusters
+	 */
+	public static void drawChart(ArrayList<KMeanCluster> clusters, int k){
 		XYSeriesCollection dots = new XYSeriesCollection();
 		for (int i = 0; i<k; i++){
 			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;

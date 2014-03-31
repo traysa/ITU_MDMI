@@ -3,16 +3,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 
 import clustering.data.Item;
 import clustering.data.Survey2014;
 import clustering.kMean.KMeanCluster;
 import clustering.kMean.KMeans;
-import frequentPattern.Apriori;
-import frequentPattern.AssociationRule;
-import frequentPattern.ItemSet;
+import frequentPattern.apriori.Apriori;
+import frequentPattern.apriori.AssociationRule;
+import frequentPattern.data.ItemSet;
+import frequentPattern.data.Survey2014_Preprocessing;
 import preprocessing.CSVFileReader;
 import preprocessing.DataCleaner_Survey2014;
 import preprocessing.IDataCleaner;
@@ -24,6 +24,8 @@ import supervisedLearning.id3.Node;
 
 public class Main {
 
+	private final static Boolean DEBUG = false;
+	
 	public static void main(String[] args) throws Exception {
 		
 		try {
@@ -59,31 +61,20 @@ public class Main {
 			}
 			System.out.println("------------------------------------------------------------------");
 			
-//			System.out.println("================================================");
-//			System.out.println("ID3 Algorithm");
-//			System.out.println("================================================");
-//			ArrayList<ID3Object> survey2014 = DataManager_Survey2014.LoadData(data);
-//			System.out.println("DataManager loaded "+survey2014.size() + " items\n");
-//			boolean loop = false;
-//			if (loop)
-//				loopID3(survey2014);
-//			else
-//				ID3(survey2014,37);
+			System.out.println("\n================================================================================================");
+			System.out.println("ID3 Algorithm");
+			System.out.println("================================================================================================");
+			ID3_method(data);
 			
-			
-			System.out.println("================================================");
+			System.out.println("\n================================================================================================");
 			System.out.println("Frequent Pattern on Programming Languages (Apriori)");
-			System.out.println("================================================");
-			apriori(translateIntoTransactions(data,4),3,0.8);
+			System.out.println("================================================================================================");
+			apriori_method(data,4,0.75);
 
-//			System.out.println("================================================");
-//			System.out.println("Clustering on (K-Means)");
-//			System.out.println("================================================");
-//			//First step load in iris data
-//			ArrayList<Item> survey2014_Data = Survey2014.LoadAllData(data);
-//			System.out.println(survey2014_Data);
-//			//Second step --> do the clustering using k-means!
-//			ArrayList<KMeanCluster> FoundClusters_KMeans = KMeans.KMeansPartition(3, survey2014_Data);
+			System.out.println("\n================================================================================================");
+			System.out.println("Clustering on (K-Means)");
+			System.out.println("================================================================================================");
+			kmeans_method(data,3);
 			
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
@@ -92,153 +83,91 @@ public class Main {
 	}
 	
 	/**
+	 * Preprocessing and start of the kmeans method
 	 * 
-	 * @param data
-	 * @param column
-	 * @return
+	 * @param data Data to cluster
+	 * @param k Number of clusters
+	 * @throws Exception
 	 */
-	private static int[][] translateIntoTransactions(String[][] data, int column){
-		// Translate programming languages into transaction item IDs
-		int[][] transactions = new int[data.length][];
-		HashMap<String,Integer> translationList = new HashMap<String,Integer>();
-		int number = 1;
-		for (int i=0; i<data.length;i++){
-			String[] progLangs = data[i][column].replaceAll("\\[|\\]|\\s", "").trim().split(",");
-			transactions[i] = new int[progLangs.length];
-			int progLangIndex = 0;
-			for (String progLang: progLangs){
-				if (!progLang.trim().isEmpty()){
-					if (translationList.containsKey(progLang)){
-						transactions[i][progLangIndex] = translationList.get(progLang);
-					} else {
-						transactions[i][progLangIndex] = number;
-						translationList.put(progLang,number);
-						number++;
-					}
-				} else {
-					transactions[i][progLangIndex] = 0;
-				}
-					
-				progLangIndex++;
-			}
-			
-//			for (int j=0; j<progLangs.length;j++){
-//				System.out.println("."+progLangs[j]+" ==> "+transactions[i][j]);
-//			}
-//			System.out.println("---");
-		}
-		
-		System.out.println("TRANSLATION");
-		System.out.println("---------------------------");
-		for (String progLang : translationList.keySet()){
-			System.out.println(translationList.get(progLang) + " ==> " + progLang);
-		}
-		System.out.println("---------------------------");
-		
-		return transactions;
+	private static void kmeans_method(String[][] data, int k) throws Exception{
+		// Load in and preprocess data
+		ArrayList<Item> survey2014_Data = Survey2014.LoadAllData(data);
+		System.out.println("DataManager loaded "+ survey2014_Data.size() + " items");
+		System.out.println(survey2014_Data);
+		// Clustering using k-means
+		ArrayList<KMeanCluster> FoundClusters_KMeans = KMeans.KMeansPartition(k, survey2014_Data);
+		// Draw chart of the clusters
+		Survey2014.drawChart(FoundClusters_KMeans,k);
 	}
 	
 	/**
+	 * Preprocessing and start of the apriori method 
 	 * 
 	 * @param transactions
 	 * @param supportThreshold Select a reasonable support threshold via trial-and-error. Can either be percentage or absolute value
 	 * @param confidenceThreshold Select a reasonable confidence threshold (percentage value)
 	 * @throws Exception 
 	 */
-	private static void apriori(int[][] transactions, int supportThreshold, double confidenceThreshold) throws Exception{
-		// Print
-		System.out.print("TRANSACTIONS (" + transactions.length + " items): ");
-		String resultStr = "";
-		for(int[] transaction: transactions){
-			resultStr += "[";
-			for(int item: transaction)
-				resultStr += item+", ";
-			resultStr = resultStr.substring(0, resultStr.lastIndexOf(",")) + "],";
+	private static void apriori_method(String[][] data, int supportThreshold, double confidenceThreshold) throws Exception{
+		// Create transactions
+		int[][] transactions = Survey2014_Preprocessing.translateIntoTransactions(data,4);
+		System.out.println("DataManager loaded "+ transactions.length + " items");
+		System.out.println(Survey2014_Preprocessing.transactionsToString(transactions));
+
+    	Hashtable<ItemSet,Integer> frequentItemSets = Apriori.apriori(transactions, supportThreshold);
+    	if (DEBUG){
+	        System.out.println("\nFREQUENT ITEMSETS:");
+	        for(ItemSet itemset: frequentItemSets.keySet()){
+	        	System.out.println(itemset + " = " + frequentItemSets.get(itemset));
+	        }
     	}
-		resultStr = resultStr.substring(0, resultStr.lastIndexOf(","));
-		System.out.println(resultStr);
-    	
-		Apriori apriori = new Apriori();
-    	Hashtable<ItemSet,Integer> frequentItemSets = apriori.apriori(transactions, supportThreshold);
-//        System.out.println("\nFREQUENT ITEMSETS:");
-//        for(ItemSet itemset: frequentItemSets.keySet()){
-//        	System.out.println(itemset + " = " + frequentItemSets.get(itemset));
-//        }
         
-        ArrayList<AssociationRule> associationRules = apriori.createAssociationRules(frequentItemSets, confidenceThreshold, transactions.length);
+        ArrayList<AssociationRule> associationRules = Apriori.createAssociationRules(frequentItemSets, confidenceThreshold, transactions.length);
         System.out.println("\nASSOCIATION RULES:");
         for(AssociationRule rule: associationRules){
-        	System.out.println(rule);
+        	System.out.println(rule.toString());
         }
+        
+        System.out.println("\n"+Survey2014_Preprocessing.translationListToString());
 	}
 	
 	/**
+	 * Preprocessing and start of the ID3 method 
 	 * 
 	 * @param mushrooms
 	 * @param sizeOfTestSet
 	 * @throws Exception 
 	 */
-	private static void ID3(ArrayList<ID3Object> items, int sizeOfTestSet) throws Exception{
-		//Size of Testset; Testset is picked from the mushroom objects
+	private static void ID3_method(String[][] data) throws Exception{
+		// Load in and preprocess data
+		ArrayList<ID3Object> survey2014 = supervisedLearning.data.Survey2014.LoadData(data);
+		int size = survey2014.size();
+		System.out.println("DataManager loaded "+ size + " items");
+		
+		// Size of Testset; Testset is picked from the data
 		ArrayList<ID3Object> testSet = new ArrayList<ID3Object>();
-		for (int i = 0; i < sizeOfTestSet; i++){
-			testSet.add(items.get(i));
+		for (int i = 0; i < size; i++){
+			testSet.add(survey2014.get(i));
 		}
 		
+		// Create decision tree
 		ID3Algorithm id3 = new ID3Algorithm();
-		Node decisionTree = id3.generateDecisionTree(testSet,"s2014_Class","");
-	    
+		Node decisionTree = id3.generateDecisionTree(testSet,testSet.get(0).getAttributeList(),"s2014_Class","");
+		
+	    // Draw graph
 	    try {
 		    GraphPrinter graphPrinter = new GraphPrinter("C:\\Program Files (x86)\\Graphviz2.36\\bin","png",".\\results");
-		    graphPrinter.createAutomatGraphViz("result_"+sizeOfTestSet+"_"+new SimpleDateFormat("yyyyMMdd").format(new Date()), decisionTree);
+		    graphPrinter.createAutomatGraphViz("result_"+size+"_"+new SimpleDateFormat("yyyyMMdd").format(new Date()), decisionTree);
 	    }
 	    catch (Exception e){
 	    	System.out.println("ERROR: "+e.getMessage());
 	    	e.printStackTrace();
 	    }
-		
-		double result = id3.testData(decisionTree, items);
-		
+	    
+		// Test the data on the decision tree and evaluate it's accuracy
+		double result = id3.testData(decisionTree, survey2014);
 		System.out.println("\nTestSet:\t"+testSet.size() + " items");
-		System.out.println("Accurancy:\t" + result);
-	}
-	
-	/**
-	 * 
-	 * @param mushrooms
-	 * @throws Exception 
-	 */
-	private static void loopID3(ArrayList<ID3Object> items) throws Exception{
-		System.out.println("\nTestSet (Items)\t| Accuracy");
-		System.out.println("---------------------------------------------");
-		double currentAccruracy = 0;
-		int sizeOfTestSet = 1;
-		boolean maxAccuracy = false;
-		while (sizeOfTestSet<=items.size() && !maxAccuracy){
-			ArrayList<ID3Object> testSet = new ArrayList<ID3Object>();
-			for (int i = 0; i < sizeOfTestSet; i++){
-				testSet.add(items.get(i));
-			}
-			
-			ID3Algorithm id3 = new ID3Algorithm();
-			Node decisionTree = id3.generateDecisionTree(testSet,"s2014_Class","");
-		    
-			double result = id3.testData(decisionTree, items);
-			if (currentAccruracy < result){
-				System.out.println(testSet.size()+"\t\t\t| "+result);
-				currentAccruracy = result;
-			    try {
-				    GraphPrinter graphPrinter = new GraphPrinter("C:\\Program Files (x86)\\Graphviz2.36\\bin","png",".\\results");
-				    graphPrinter.createAutomatGraphViz("result_"+sizeOfTestSet+"_"+new SimpleDateFormat("yyyyMMdd").format(new Date()), decisionTree);
-			    }
-			    catch (Exception e){
-			    	
-			    }
-			}
-			if (result >= 1.0)
-				maxAccuracy = true;
-			sizeOfTestSet++;
-		}
+		System.out.println("Accuracy:\t" + result);
 	}
 
 }

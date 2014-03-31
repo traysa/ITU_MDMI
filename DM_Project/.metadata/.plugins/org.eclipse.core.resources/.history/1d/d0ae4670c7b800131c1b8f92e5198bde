@@ -1,0 +1,101 @@
+package frequentPattern;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class Preprocessing {
+	
+	private static HashMap<String,Integer> translationList = null;
+	
+	/**
+	 * 
+	 * @param data
+	 * @param column
+	 * @return
+	 */
+	public static Integer[][] translateIntoTransactions(String[][] data, int column){
+		// Translate programming languages into transaction item IDs
+		ArrayList<Integer[]> transactions = new ArrayList<Integer[]>();
+		translationList = new HashMap<String,Integer>();
+		int number = 1;
+		for (int i=0; i<data.length;i++){
+			String[] progLangsStr = data[i][column].replaceAll("\\[|\\]|\\s", "").trim().split(",");
+			Integer[] progLangs = new Integer[progLangsStr.length];
+			int progLangIndex = 0;
+			for (String progLang: progLangsStr){
+				if (!progLang.trim().isEmpty()){
+					if (translationList.containsKey(progLang)){
+						progLangs[progLangIndex] = translationList.get(progLang);
+					} else {
+						progLangs[progLangIndex] = number;
+						translationList.put(progLang,number);
+						number++;
+					}
+				} else {
+					System.out.println("Preprocessing: Line "+i+" will be dropped.");
+				}
+				progLangIndex++;
+			}
+			transactions.add(progLangs);
+		}
+		return transactions.toArray(new Integer[transactions.size()][]);
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static String getTranslation(int id){
+		if (translationList.containsValue(id)){
+			for (String key : translationList.keySet()){
+				if (translationList.get(key).equals(id)){
+					return key;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static HashMap<String,Integer> getTranslationList(){
+		return translationList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String translationListToString(){
+		if (translationList == null)
+			return "The transactionList is empty.";
+		String result = "TRANSLATION";
+		result += "\n---------------------------";
+		for (String progLang : translationList.keySet()){
+			result += "\n"+translationList.get(progLang) + " ==> " + progLang;
+		}
+		result += "\n---------------------------";
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static String transactionsToString(Integer[][] transactions){
+		System.out.print("TRANSACTIONS (" + transactions.length + " items): ");
+		String resultStr = "";
+		for(Integer[] transaction: transactions){
+			resultStr += "[";
+			for(int item: transaction)
+				resultStr += item+", ";
+			resultStr = resultStr.substring(0, resultStr.lastIndexOf(",")) + "],";
+    	}
+		resultStr = resultStr.substring(0, resultStr.lastIndexOf(","));
+		return resultStr;
+	}
+
+}

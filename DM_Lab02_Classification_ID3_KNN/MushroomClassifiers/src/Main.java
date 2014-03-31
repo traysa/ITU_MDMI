@@ -30,22 +30,22 @@ public class Main {
 		System.out.println("================================================");
 		System.out.println("ID3 Algorithm");
 		System.out.println("================================================");
-		boolean loop = true;
+		boolean loop = false;
 		if (loop)
 			loopID3(mushrooms);
 		else
 			ID3(mushrooms,209);
 
-		System.out.println("\n");
-		System.out.println("================================================");
-		System.out.println("kNN Algorithm");
-		System.out.println("================================================");
-		int looptype = 2;
-		if (looptype==1)
-			loopKNNoverTrainingSet(mushrooms,7);
-		else if (looptype==2)
-			loopKNNoverK(mushrooms,700);
-		else KNN(mushrooms,209,7);
+//		System.out.println("\n");
+//		System.out.println("================================================");
+//		System.out.println("kNN Algorithm");
+//		System.out.println("================================================");
+//		int looptype = 2;
+//		if (looptype==1)
+//			loopKNNoverTrainingSet(mushrooms,7);
+//		else if (looptype==2)
+//			loopKNNoverK(mushrooms,700);
+//		else KNN(mushrooms,209,7);
 	}
 	
 	

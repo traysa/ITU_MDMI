@@ -60,4 +60,16 @@ public class Buckets {
 	public void setBuckets(HashMap<Object, ArrayList<ID3Object>> buckets) {
 		this.buckets = buckets;
 	}
+	
+	public Object getMajority(){
+		Object result = null;
+		int max =0;
+		for (Object key : buckets.keySet()){
+			if(buckets.get(key).size() > max){
+				max = buckets.get(key).size();
+				result = key;
+			}
+		}
+		return result;
+	}
 }

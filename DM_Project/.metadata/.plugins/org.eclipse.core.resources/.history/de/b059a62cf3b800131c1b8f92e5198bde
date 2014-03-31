@@ -1,0 +1,108 @@
+package data;
+
+public class DataResolver {
+	
+	public static Double resolveDouble(String doubleVal){
+		try {
+			return Double.parseDouble(doubleVal);
+		} catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public static Integer resolveInteger(String intVal){
+		try {
+			return Integer.parseInt(intVal);
+		} catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public static Boolean resolveBoolean(String boolVal){
+		if(boolVal.toUpperCase().equals("YES"))
+			return true;
+		else if(boolVal.toUpperCase().equals("NO"))
+			return false;
+		return null;
+	}
+	
+	public static FavSQLServ resolveSQLServ(String favSqlServ)
+	{
+		if(favSqlServ.toUpperCase().equals("MSSQL"))
+			return FavSQLServ.MSSQL;
+		else if(favSqlServ.toUpperCase().equals("MYSQL"))
+			return FavSQLServ.MySQL;
+		else if(favSqlServ.toUpperCase().equals("ORACLE"))
+			return FavSQLServ.Oracle;
+		else if(favSqlServ.toUpperCase().equals("POSTGRESQL"))
+			return FavSQLServ.PostgreSQL;
+		return FavSQLServ.Not_defined;
+	}
+	
+	public static FavColor resolveColor(String favColor)
+	{
+		if(favColor.toUpperCase().equals("BLUE"))
+			return FavColor.Blue;
+		else if(favColor.toUpperCase().equals("GREEN"))
+			return FavColor.Green;
+		else if(favColor.toUpperCase().equals("RED"))
+			return FavColor.Red;
+		else if(favColor.toUpperCase().equals("YELLOW"))
+			return FavColor.Yellow;
+		else if(favColor.toUpperCase().equals("BLACK"))
+			return FavColor.Black;
+		else if(favColor.toUpperCase().equals("ORANGE"))
+			return FavColor.Orange;
+		return FavColor.Not_defined;
+	}
+	
+	public static FavAnimal resolveAnimal(String favAnimal)
+	{
+		if(favAnimal.toUpperCase().equals("ZEBRA"))
+			return FavAnimal.Zebra;
+		else if(favAnimal.toUpperCase().equals("ELEPHANT"))
+			return FavAnimal.Elephant;
+		else if(favAnimal.toUpperCase().equals("ASPARAGUS"))
+			return FavAnimal.Asparagus;
+		return null;
+	}
+	
+	public static OS resolveOS(String os)
+	{
+		if(os.toUpperCase().equals("OSX"))
+			return OS.OSX;
+		else if(os.toUpperCase().equals("WINDOWS"))
+			return OS.Windows;
+		else if(os.toUpperCase().equals("LINUX"))
+			return OS.Linux;
+		return OS.Not_defined;
+	}
+
+	public static ProgLangs resolveProgLangs(String progLangs)
+	{
+		if(progLangs.equals("C#"))
+			return ProgLangs.CSharp;
+		else if(progLangs.equals("C++"))
+			return ProgLangs.CPlusPlus;
+		else if(progLangs.equals("C"))
+			return ProgLangs.C;
+		else if(progLangs.equals("Java"))
+			return ProgLangs.Java;
+		else if(progLangs.equals("Javascript"))
+			return ProgLangs.Javascript;
+		else if(progLangs.equals("F#"))
+			return ProgLangs.FSharp;
+		else if(progLangs.equals("OBJECTIVE-C"))
+			return ProgLangs.OBJC;
+		else if(progLangs.equals("PHP"))
+			return ProgLangs.PHP;
+		else if(progLangs.equals("Python"))
+			return ProgLangs.Python;
+		else if(progLangs.equals("RUBY"))
+			return ProgLangs.RUBY;
+		else if(progLangs.equals("Scala"))
+			return ProgLangs.Scala;
+		return ProgLangs.Not_defined;
+	}
+
+}

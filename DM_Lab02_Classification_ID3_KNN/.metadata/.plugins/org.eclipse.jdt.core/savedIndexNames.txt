@@ -1,2 +1,2 @@
-INDEX VERSION 1.126+/Users/theresa/Documents/Studium/Semester 2/Data Mining/Exercises/ITU_MDMI/DM_Lab02_Classification_ID3_KNN/.metadata/.plugins/org.eclipse.jdt.core
-2099151794.index
+INDEX VERSION 1.126+D:\data\Studium\Master\Semester 2\Data Mining\Exercises\ITU_MDMI\DM_Lab02_Classification_ID3_KNN\.metadata\.plugins\org.eclipse.jdt.core
+494245184.index

@@ -12,5 +12,4 @@ public enum ProgLangs{
 	RUBY,
 	FSharp,
 	Scala,
-	Not_defined
 }

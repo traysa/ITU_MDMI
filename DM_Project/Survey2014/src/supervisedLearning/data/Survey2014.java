@@ -1,25 +1,94 @@
 package supervisedLearning.data;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
+import data.CSVFileReader;
+import data.DataResolver;
+import data.FavAnimal;
 import data.FavColor;
+import data.FavSQLServ;
+import data.OS;
+import data.ProgLangs;
 import supervisedLearning.id3.ID3Object;
 
 public class Survey2014 implements ID3Object{
+	
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public static ArrayList<ID3Object> LoadDataFromFile(String filename) {
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		try {
+			String[][] data = CSVFileReader.readDataFile(filename, ",","", false);
+			datalist = LoadData(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return datalist;
+	}
+	
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public static ArrayList<ID3Object> LoadData(String[][] data)
+	{
+		ArrayList<Integer> skippedData = new ArrayList<Integer>();
+		ArrayList<ID3Object> datalist = new ArrayList<ID3Object>();	
+		for(int i = 0; i < data.length; i++)
+		{
+			Boolean classlabel = DataResolver.resolveBoolean(data[i][8]);
+			if (classlabel!=null && data[i][6]!=null && data[i][7]!=null && data[i][13]!=null){
+				Survey2014 entryToAdd = new Survey2014();
+				entryToAdd.setClasslabel(classlabel);
+//				entryToAdd.s2014_age = DataResolver.resolveInteger(data[i][0]);
+//				entryToAdd.s2014_prog_skill = data[i][1];
+//				entryToAdd.s2014_uni_yrs = DataResolver.resolveDouble(data[i][2]);
+//				entryToAdd.s2014_os = DataResolver.resolveOS(data[i][3]);
+//				entryToAdd.s2014_progLangs = DataResolver.resolveProgLangs(data[i][4]);
+//				entryToAdd.s2014_engSkill = DataResolver.resolveInteger(data[i][5]);
+				entryToAdd.s2014_favAnimal = DataResolver.resolveAnimal(data[i][6]);
+				entryToAdd.s2014_MoreMtns = DataResolver.resolveBoolean(data[i][7]);
+//				entryToAdd.s2014_winter = DataResolver.resolveBoolean(data[i][8]);
+				entryToAdd.s2014_favColor = DataResolver.resolveColor(data[i][13]);
+//				entryToAdd.s2014_neuralNetwork = DataResolver.resolveBoolean(data[i][14]);
+//				entryToAdd.s2014_vectorMachine = DataResolver.resolveBoolean(data[i][15]);
+//				entryToAdd.s2014_sql = DataResolver.resolveBoolean(data[i][16]);
+//				entryToAdd.s2014_favSQLServ = DataResolver.resolveSQLServ(data[i][17]);
+//				entryToAdd.s2014_apriori = DataResolver.resolveBoolean(data[i][18]);
+				datalist.add(entryToAdd);
+			}
+			else
+				skippedData.add(i);
+		}			
+		
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("PREPROCESSING FOR ID3");
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("The following lines will be skipped due to incomplete data:\n"+skippedData.toString());
+		System.out.println("----------------------------------------------------------------");
+		
+		return datalist;	
+	}
 	
 	/**
 	 * The attribute to built a classifier for.
 	 */
 	private Object s2014_Class;
 //	public Integer s2014_age;
-//	public Integer s2014_prog_skill;
+//	public String s2014_prog_skill;
 //	public Double s2014_uni_yrs;
 //	public OS s2014_os;
-//	public ProgLangs s2014_progLangs;
+//	public HashSet<ProgLangs> s2014_progLangs;
 //	public Integer s2014_engSkill;
-//	public FavAnimal s2014_favAnimal;
-//	public Boolean s2014_MoreMtns;
-	public Boolean s2014_winter;
+	public FavAnimal s2014_favAnimal;
+	public Boolean s2014_MoreMtns;
+//	public Boolean s2014_winter;
 	public FavColor s2014_favColor;
 //	public Boolean s2014_neuralNetwork;
 //	public Boolean s2014_vectorMachine;
@@ -36,9 +105,9 @@ public class Survey2014 implements ID3Object{
 //		attributes.add("s2014_os");
 //		attributes.add("s2014_progLangs");
 //		attributes.add("s2014_engSkill");
-//		attributes.add("s2014_favAnimal");
-//		attributes.add("s2014_MoreMtns");
-		attributes.add("s2014_winter");
+		attributes.add("s2014_favAnimal");
+		attributes.add("s2014_MoreMtns");
+//		attributes.add("s2014_winter");
 		attributes.add("s2014_favColor");
 //		attributes.add("s2014_neuralNetwork");
 //		attributes.add("s2014_vectorMachine");
@@ -50,68 +119,67 @@ public class Survey2014 implements ID3Object{
 
 	@Override
 	public Object getAttributeValue(Object Attribute) throws Exception {
-		String attr = Attribute.toString().replaceAll("_1", "");
-		if(attr.equals("s2014_Class"))
+		if(Attribute.equals("s2014_Class"))
 		{
 			return this.s2014_Class;
 		}
-//		if(attr.equals("s2014_age"))
+//		if(Attribute.equals("s2014_age"))
 //		{
 //			return this.s2014_age;
 //		}		
-//		if(attr.equals("s2014_prog_skill"))
+//		if(Attribute.equals("s2014_prog_skill"))
 //		{
 //			return this.s2014_prog_skill;
 //		}
-//		if(attr.equals("s2014_uni_yrs"))
+//		if(Attribute.equals("s2014_uni_yrs"))
 //		{
 //			return this.s2014_uni_yrs;
 //		}
-//		if(attr.equals("s2014_os"))
+//		if(Attribute.equals("s2014_os"))
 //		{
 //			return this.s2014_os;
 //		}
-//		if(attr.equals("s2014_progLangs"))
+//		if(Attribute.equals("s2014_progLangs"))
 //		{
 //			return this.s2014_progLangs;
 //		}
-//		if(attr.equals("s2014_engSkill"))
+//		if(Attribute.equals("s2014_engSkill"))
 //		{
 //			return this.s2014_engSkill;
 //		}
-//		if(attr.equals("s2014_favAnimal"))
-//		{
-//			return this.s2014_favAnimal;
-//		}
-//		if(attr.equals("s2014_MoreMtns"))
-//		{
-//			return this.s2014_MoreMtns;
-//		}
-		if(attr.equals("s2014_winter"))
+		if(Attribute.equals("s2014_favAnimal"))
 		{
-			return this.s2014_winter;
+			return this.s2014_favAnimal;
 		}
-		if(attr.equals("s2014_favColor"))
+		if(Attribute.equals("s2014_MoreMtns"))
+		{
+			return this.s2014_MoreMtns;
+		}
+//		if(Attribute.equals("s2014_winter"))
+//		{
+//			return this.s2014_winter;
+//		}
+		if(Attribute.equals("s2014_favColor"))
 		{
 			return this.s2014_favColor;
 		}
-//		if(attr.equals("s2014_neuralNetwork"))
+//		if(Attribute.equals("s2014_neuralNetwork"))
 //		{
 //			return this.s2014_neuralNetwork;
 //		}
-//		if(attr.equals("s2014_vectorMachine"))
+//		if(Attribute.equals("s2014_vectorMachine"))
 //		{
 //			return this.s2014_vectorMachine;
 //		}
-//		if(attr.equals("s2014_sql"))
+//		if(Attribute.equals("s2014_sql"))
 //		{
 //			return this.s2014_sql;
 //		}
-//		if(attr.equals("s2014_favSQLServ"))
+//		if(Attribute.equals("s2014_favSQLServ"))
 //		{
 //			return this.s2014_favSQLServ;
 //		}
-//		if(attr.equals("s2014_apriori"))
+//		if(Attribute.equals("s2014_apriori"))
 //		{
 //			return this.s2014_apriori;
 //		}
@@ -129,4 +197,18 @@ public class Survey2014 implements ID3Object{
 		this.s2014_Class = classLabel;
 	}
 
+	@Override
+	public String toString(){
+		String result = "";
+		result += "[" + this.s2014_Class + "]";
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (obj.getClass().equals(this.getClass())){
+			Survey2014 other = (Survey2014) obj;
+			return (this.s2014_Class.equals(other.s2014_Class));
+		} else return false;
+	}
 }

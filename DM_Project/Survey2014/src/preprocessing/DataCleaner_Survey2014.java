@@ -23,7 +23,7 @@ public class DataCleaner_Survey2014 extends DataCleaning implements IDataCleaner
 		System.out.println("1 PROGAMMER SKILL [1-10]");
 		System.out.println("---------------------------------");
 		//pattern = "^(1|2|3|4|5|6|7|8|9|10)$";
-		pattern = "^[0-9]*(\\.|,){0,1}[0-9]*$";
+		pattern = "^(([0-9]((\\.|,)[0-9]*)?)|(10))$";
 		data = this.cleanStringValues(pattern, 1);
 		
 		System.out.println("---------------------------------");

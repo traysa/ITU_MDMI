@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/Survey2014/src/frequentPattern/Apriori.java"/>
+<listEntry value="/Survey2014/src/frequentPattern/apriori/Apriori.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="frequentPattern.Apriori"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="frequentPattern.apriori.Apriori"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Survey2014"/>
 </launchConfiguration>

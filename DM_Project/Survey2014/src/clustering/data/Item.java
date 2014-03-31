@@ -20,17 +20,4 @@ public interface Item extends Comparable<Item> {
 	 */
 	public float distance(Item obj);
 	
-	/**
-	 * Calculates the mean of a cluster of items
-	 * @param cluster
-	 * @return Mean
-	 */
-	public Item mean(ArrayList<Item> clusterMembers);
-
-	/**
-	 * Draws a chart of the values and clusters
-	 * @param clusters Clusters to consider
-	 * @param k Number of clusters
-	 */
-	public void drawChart(ArrayList<KMeanCluster> clusters, int k);
 }

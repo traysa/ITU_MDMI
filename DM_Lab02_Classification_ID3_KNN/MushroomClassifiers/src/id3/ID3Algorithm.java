@@ -2,6 +2,7 @@ package id3;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * 
@@ -53,6 +54,55 @@ public class ID3Algorithm {
 		else
 			return testObject(decisionTree.getChildren().get(value.toString()), object);
 
+	}
+	
+public Node decTree(ArrayList<ID3Object> D, ArrayList<Object> attribute_List, Object classifierClass, String transition) throws Exception{
+		
+		// if the objects in D are all the same, then return a node labeled with the object class in D
+		boolean isLeaf = true;
+		ID3Object prevItem = D.get(0);
+		Iterator<ID3Object> iterator = D.iterator();
+		while (isLeaf && iterator.hasNext()){
+			ID3Object item = iterator.next();
+			if (!prevItem.equals(item))
+				isLeaf = false;
+		}
+		if (isLeaf)
+			return new Node(transition,D.get(0).getClasslabel(),true);
+		
+		// If the attribute_List is empty, return a node labeled with the majority class in D
+		if (attribute_List.isEmpty()){
+			Buckets buckets = new Buckets(D, classifierClass);
+			return new Node(transition,buckets.getMajority(),true);
+		}
+		
+		// Choose attribute with highest information gain
+		ArrayList<InformationGain> informationGains = new ArrayList<InformationGain>();
+		for(Object attribute: attribute_List){
+			informationGains.add(new InformationGain(D, classifierClass, attribute));
+		}
+		Collections.sort(informationGains);
+		Object splittingAttribute = informationGains.get(informationGains.size()-1).getAttribute();
+		if (DEBUG) System.out.println("splittingAttribute: " + splittingAttribute);
+		
+		// Remove splitting attribute from the attribute List
+		attribute_List.remove(splittingAttribute);	
+		
+		// For each outcome of the splitting attribute
+		Node node = new Node(transition,splittingAttribute,false);
+		// Create buckets for each characteristic of the classifier
+		Buckets bucketsForClassifier = new Buckets(D, splittingAttribute);
+		
+		for (Object characteristic: bucketsForClassifier.getBuckets().keySet()){
+			if (DEBUG) System.out.println("\tCharacteristic: " + characteristic);
+			ArrayList<ID3Object> Dj = bucketsForClassifier.getBuckets().get(characteristic);
+			if (Dj.isEmpty())
+				return new Node(transition,bucketsForClassifier.getMajority(),true);
+			else
+			// Add decision tree for each characteristic to the node of the new classifier
+			node.addChild(characteristic.toString(),decTree(Dj,attribute_List,classifierClass,characteristic.toString()));
+		}
+		return node;
 	}
 	
 	/**

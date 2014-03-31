@@ -7,5 +7,4 @@ public enum FavColor{
 	Yellow,
 	Black,
 	Orange,
-	Not_defined
 }

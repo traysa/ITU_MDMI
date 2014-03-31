@@ -5,5 +5,4 @@ public enum FavSQLServ{
 	MSSQL,
 	Oracle,
 	PostgreSQL,
-	Not_defined
 }

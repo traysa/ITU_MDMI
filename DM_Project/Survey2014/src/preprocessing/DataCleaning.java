@@ -139,8 +139,8 @@ public class DataCleaning{
 		    	//System.out.println("Line "+counter+": "+line[column]+" --> "+ m.group(0));
 		    	line[column] = m.group(0);
 		    } else {
-		    	System.out.println("Line "+counter+": "+line[column]+" --> Invalid Data");
-		    	line[column] = "Invalid Data";
+		    	System.out.println("Line "+counter+": "+line[column]+" --> null");
+		    	line[column] = null;
 		    	if (errorCnt.containsKey(counter))
 					errorCnt.put(counter,errorCnt.get(counter)+1);
 				else errorCnt.put(counter,1);

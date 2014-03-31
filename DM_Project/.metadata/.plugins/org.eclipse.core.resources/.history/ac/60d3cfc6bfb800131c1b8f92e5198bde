@@ -1,0 +1,60 @@
+package frequentPattern;
+
+import java.util.HashMap;
+
+public class Preprocessing {
+	
+	private static HashMap<String,Integer> translationList = null;
+	
+	
+	/**
+	 * 
+	 * @param data
+	 * @param column
+	 * @return
+	 */
+	public static int[][] translateIntoTransactions(String[][] data, int column){
+		// Translate programming languages into transaction item IDs
+		int[][] transactions = new int[data.length][];
+		translationList = new HashMap<String,Integer>();
+		int number = 1;
+		for (int i=0; i<data.length;i++){
+			String[] progLangs = data[i][column].replaceAll("\\[|\\]|\\s", "").trim().split(",");
+			transactions[i] = new int[progLangs.length];
+			int progLangIndex = 0;
+			for (String progLang: progLangs){
+				if (!progLang.trim().isEmpty()){
+					if (translationList.containsKey(progLang)){
+						transactions[i][progLangIndex] = translationList.get(progLang);
+					} else {
+						transactions[i][progLangIndex] = number;
+						translationList.put(progLang,number);
+						number++;
+					}
+				} else {
+					transactions[i][progLangIndex] = 0;
+				}
+				progLangIndex++;
+			}
+		}
+		
+		return transactions;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String transactionListToString(){
+		if (this.translationList == null)
+			return "The transactionList is empty.";
+		String result = "TRANSLATION";
+		result += "\n---------------------------";
+		for (String progLang : translationList.keySet()){
+			result += "\n"+translationList.get(progLang) + " ==> " + progLang;
+		}
+		result += "\n---------------------------";
+		return result;
+	}
+
+}

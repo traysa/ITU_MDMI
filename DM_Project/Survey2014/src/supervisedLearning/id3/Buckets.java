@@ -2,6 +2,7 @@ package supervisedLearning.id3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * 
@@ -15,7 +16,7 @@ public class Buckets {
 	public Buckets(ArrayList<ID3Object> objects, Object classifier) throws Exception {
 		createBuckets(objects, classifier);
 		if (!this.validateBuckets())
-			throw new Exception("BUckets are not valid");
+			throw new Exception("Buckets are not valid");
 	}
 
 	/**
@@ -30,7 +31,7 @@ public class Buckets {
 	private void createBuckets(ArrayList<ID3Object> objects, Object classifier) throws Exception{
 		for(ID3Object object : objects){
 			if (object.getAttributeValue(classifier)!=null){
-				Object attributeValue = object.getAttributeValue(classifier).toString();
+				String attributeValue = object.getAttributeValue(classifier).toString();
 				// If bucket for classifier does not exist, create a new bucket for the classifier and add the object to it
 				ArrayList<ID3Object> list = new ArrayList<ID3Object>();
 				if (this.buckets.containsKey(attributeValue)){
@@ -66,5 +67,33 @@ public class Buckets {
 	
 	public void setBuckets(HashMap<Object, ArrayList<ID3Object>> buckets) {
 		this.buckets = buckets;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Object getMajority(){
+		Object result = null;
+		int max =0;
+		for (Object key : buckets.keySet()){
+			if(buckets.get(key).size() > max){
+				max = buckets.get(key).size();
+				result = key;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getClassDistribution(){
+		String result = "";
+		for (Object key : buckets.keySet()){
+			result += key + ",";
+		}
+		return result.substring(0,result.length()-1);
 	}
 }

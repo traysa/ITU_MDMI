@@ -15,8 +15,9 @@ public class KMeans {
 	 * @param k Number of clusters
 	 * @param data Data to cluster
 	 * @return
+	 * @throws Exception 
 	 */
-	public static ArrayList<KMeanCluster> KMeansPartition(int k, ArrayList<Item> data)
+	public static ArrayList<KMeanCluster> KMeansPartition(int k, ArrayList<Item> data) throws Exception
 	{
 		// Get random initial cluster centres
 		Item[] previousClusterCenters = getInitialClusterCenters(k, data);
@@ -43,8 +44,6 @@ public class KMeans {
 			previousClusterCenters = clusterCenters;
 		}
 		
-		clusters.get(0).ClusterMembers.get(0).drawChart(clusters,k);
-		
 		return clusters;
 	}
 	
@@ -58,7 +57,7 @@ public class KMeans {
 		Item[] clusterCenters = new Item[k];	
 		Random randomGenerator = new Random();
 		for (int i = 0; i<k; i++){
-			clusterCenters[i] = data.get(randomGenerator.nextInt(data.size()));		
+			clusterCenters[i] = data.get(randomGenerator.nextInt(data.size()-1));		
 		}
 		return clusterCenters;
 	}
@@ -103,7 +102,7 @@ public class KMeans {
 		for (int i = 0; i<k; i++){
 			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;
 			if (!clusterMembers.isEmpty()){
-				Item clusterCenter = clusterMembers.get(0).mean(clusterMembers);
+				Item clusterCenter = Survey2014.mean(clusterMembers);
 				clusterCenters[i] = clusterCenter;
 			}
 		}
@@ -116,11 +115,14 @@ public class KMeans {
 	 * @param clusterCenter2 Cluster center 2
 	 * @param k Number of Clusters
 	 * @return Are cluster centers equal?
+	 * @throws Exception 
 	 */
-	private static boolean areClusterCentersEqual(Item[] clusterCenter1, Item[] clusterCenter2, int k){
+	private static boolean areClusterCentersEqual(Item[] clusterCenter1, Item[] clusterCenter2, int k) throws Exception{
 		boolean equal = true;
 		int i = 0;
 		while (i < k && equal){
+			if (clusterCenter1[i]==null)
+				throw new Exception("Bad randomiztion of the initial cluster centers. Try again!");
 			boolean temp = false;
 			int j = 0;
 			while (j < k && !temp){

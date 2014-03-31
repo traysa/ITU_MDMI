@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Map"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.sql.Array"/>
-<fullyQualifiedTypeName name="preprocessing.CSVFileReader"/>
-<fullyQualifiedTypeName name="supervisedLearning.data.OS"/>
-<fullyQualifiedTypeName name="supervisedLearning.data.ProgLangs"/>
-<fullyQualifiedTypeName name="supervisedLearning.data.Class_Label"/>
-<fullyQualifiedTypeName name="java.io.IOException"/>
-<fullyQualifiedTypeName name="java.util.HashSet"/>
-<<<<<<< HEAD
-<fullyQualifiedTypeName name="java.util.Dictionary"/>
-<fullyQualifiedTypeName name="data.ProgLangs"/>
-<fullyQualifiedTypeName name="data.OS"/>
-<fullyQualifiedTypeName name="data.FavAnimal"/>
-<fullyQualifiedTypeName name="data.FavSQLServ"/>
-<fullyQualifiedTypeName name="data.DataResolver"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
-=======
-<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
-<fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
-<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
-<fullyQualifiedTypeName name="org.jfree.chart.ChartFrame"/>
-<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
-<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
+<fullyQualifiedTypeName name="clustering.data.Item"/>
+<fullyQualifiedTypeName name="clustering.kMean.KMeanCluster"/>
+<fullyQualifiedTypeName name="clustering.kMean.KMeans"/>
+<fullyQualifiedTypeName name="frequentPattern.Preprocessing"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="frequentPattern.data.Survey2014_Preprocessing"/>
 <fullyQualifiedTypeName name="clustering.data.Survey2014"/>
->>>>>>> 288cfdca9b4534ced4185d2480ab515779daa653
+<fullyQualifiedTypeName name="supervisedLearning.data.DataManager_Survey2014"/>
+<fullyQualifiedTypeName name="data.FavAnimal"/>
+<fullyQualifiedTypeName name="supervisedLearning.data.Survey2014"/>
+<fullyQualifiedTypeName name="data.CSVFileReader"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="data.OS"/>
+<fullyQualifiedTypeName name="data.ProgLangs"/>
+<fullyQualifiedTypeName name="data.FavSQLServ"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Array"/>
 </qualifiedTypeNameHistroy>

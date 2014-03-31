@@ -1,10 +1,22 @@
 package data;
 
-public class DataResolver {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+public class DataResolver {	
+	
+	public static Float resolveFloat(String floatVal){
+		try {
+			return Float.parseFloat(floatVal.replace(",","."));
+		} catch(Exception ex){
+			return null;
+		}
+	}
 	
 	public static Double resolveDouble(String doubleVal){
 		try {
-			return Double.parseDouble(doubleVal);
+			return Double.parseDouble(doubleVal.replace(",","."));
 		} catch(Exception ex){
 			return null;
 		}
@@ -36,7 +48,7 @@ public class DataResolver {
 			return FavSQLServ.Oracle;
 		else if(favSqlServ.toUpperCase().equals("POSTGRESQL"))
 			return FavSQLServ.PostgreSQL;
-		return FavSQLServ.Not_defined;
+		return null;
 	}
 	
 	public static FavColor resolveColor(String favColor)
@@ -53,7 +65,7 @@ public class DataResolver {
 			return FavColor.Black;
 		else if(favColor.toUpperCase().equals("ORANGE"))
 			return FavColor.Orange;
-		return FavColor.Not_defined;
+		return null;
 	}
 	
 	public static FavAnimal resolveAnimal(String favAnimal)
@@ -64,7 +76,7 @@ public class DataResolver {
 			return FavAnimal.Elephant;
 		else if(favAnimal.toUpperCase().equals("ASPARAGUS"))
 			return FavAnimal.Asparagus;
-		return FavAnimal.Not_defined;
+		return null;
 	}
 	
 	public static OS resolveOS(String os)
@@ -75,34 +87,40 @@ public class DataResolver {
 			return OS.Windows;
 		else if(os.toUpperCase().equals("LINUX"))
 			return OS.Linux;
-		return OS.Not_defined;
+		return null;
 	}
 
-	public static ProgLangs resolveProgLangs(String progLangs)
+	public static HashSet<ProgLangs> resolveProgLangs(String progLangs)
 	{
-		if(progLangs.equals("C#"))
-			return ProgLangs.CSharp;
-		else if(progLangs.equals("C++"))
-			return ProgLangs.CPlusPlus;
-		else if(progLangs.equals("C"))
-			return ProgLangs.C;
-		else if(progLangs.equals("Java"))
-			return ProgLangs.Java;
-		else if(progLangs.equals("Javascript"))
-			return ProgLangs.Javascript;
-		else if(progLangs.equals("F#"))
-			return ProgLangs.FSharp;
-		else if(progLangs.equals("OBJECTIVE-C"))
-			return ProgLangs.OBJC;
-		else if(progLangs.equals("PHP"))
-			return ProgLangs.PHP;
-		else if(progLangs.equals("Python"))
-			return ProgLangs.Python;
-		else if(progLangs.equals("RUBY"))
-			return ProgLangs.RUBY;
-		else if(progLangs.equals("Scala"))
-			return ProgLangs.Scala;
-		return ProgLangs.Not_defined;
+		String[] temp = progLangs.split(",| ");
+		HashSet<String> progLangsStr = new HashSet<String>();
+		for (String i : temp)
+			progLangsStr.add(i);
+		HashSet<ProgLangs> progLangsSet = new HashSet<ProgLangs>();
+		if(progLangsStr.contains("C#"))
+			progLangsSet.add(ProgLangs.CSharp);
+		else if(progLangsStr.contains("C++"))
+			progLangsSet.add(ProgLangs.CPlusPlus);
+		else if(progLangsStr.contains("C"))
+			progLangsSet.add(ProgLangs.C);
+		else if(progLangsStr.contains("Java"))
+			progLangsSet.add(ProgLangs.Java);
+		else if(progLangsStr.contains("Javascript"))
+			progLangsSet.add(ProgLangs.Javascript);
+		else if(progLangsStr.contains("F#"))
+			progLangsSet.add(ProgLangs.FSharp);
+		else if(progLangsStr.contains("OBJECTIVE-C"))
+			progLangsSet.add(ProgLangs.OBJC);
+		else if(progLangsStr.contains("PHP"))
+			progLangsSet.add(ProgLangs.PHP);
+		else if(progLangsStr.contains("Python"))
+			progLangsSet.add(ProgLangs.Python);
+		else if(progLangsStr.contains("RUBY"))
+			progLangsSet.add(ProgLangs.RUBY);
+		else if(progLangsStr.contains("Scala"))
+			progLangsSet.add(ProgLangs.Scala);
+		return progLangsSet;
 	}
+
 
 }
