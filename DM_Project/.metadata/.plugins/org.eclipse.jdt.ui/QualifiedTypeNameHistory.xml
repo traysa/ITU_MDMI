@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.sql.Array"/>
@@ -10,4 +9,11 @@
 <fullyQualifiedTypeName name="supervisedLearning.data.Class_Label"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="java.util.Dictionary"/>
+<fullyQualifiedTypeName name="data.ProgLangs"/>
+<fullyQualifiedTypeName name="data.OS"/>
+<fullyQualifiedTypeName name="data.FavAnimal"/>
+<fullyQualifiedTypeName name="data.FavSQLServ"/>
+<fullyQualifiedTypeName name="data.DataResolver"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
 </qualifiedTypeNameHistroy>
