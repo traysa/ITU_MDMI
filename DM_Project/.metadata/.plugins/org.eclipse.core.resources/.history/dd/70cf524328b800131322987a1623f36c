@@ -1,0 +1,46 @@
+package clustering.data;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class DataLoader {
+
+	/**
+	 * @param args
+	 */
+	public static ArrayList<Item> LoadAllDataFromCSV(String filename) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		
+		try {
+			String[][] dataOrig = CSVFileReader.readDataFile(filename,",","",true);
+			data = LoadAllData(dataOrig);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public static ArrayList<Item> LoadAllData(String[][] dataOrig) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		for(int i = 0; i < dataOrig.length; i++)
+		{
+			try{
+				float s2014_age = Float.parseFloat(dataOrig[i][0].replace(",","."));
+				float s2014_prog_skill = Float.parseFloat(dataOrig[i][1].replace(",","."));
+				float s2014_uni_yrs = Float.parseFloat(dataOrig[i][2].replace(",","."));
+//				float s2014_engSkill = Float.parseFloat(dataOrig[i][5].replace(",","."));
+				data.add(new Survey2014(s2014_age, s2014_prog_skill, s2014_uni_yrs));			
+			} catch(Exception ex){
+				System.out.println("Data ("+dataOrig[i]+") cannot be used: "+ex.getMessage());
+			}
+		}
+
+		return data;
+	}
+}

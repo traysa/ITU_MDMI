@@ -1,0 +1,37 @@
+package frequentPattern;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
+public class AssociationRule {
+	
+	ItemSet setAB;
+	double countAB;
+	ItemSet setA;
+	double countA;
+	ItemSet setB;
+	double countB;
+	double confidence = 0;
+	double lift = 0;
+	
+	public AssociationRule(ItemSet setAB, double countAB, ItemSet setA, double countA, ItemSet setB, double countB){
+		this.setAB = setAB;
+		this.setA = setA;
+		this.setB = setB;
+		this.countAB = countAB;
+		this.countA = countA;
+		this.countB = countB;
+		confidence = this.countAB / this.countA;
+		lift = confidence / this.countB;
+	}
+
+	public String toString(){
+		String result = this.setAB+": Confidence("+this.setA+" => "+this.setB+") = ";
+		result += this.countAB + "/" + this.countA + " = ";
+		result += new BigDecimal(confidence).setScale(3,RoundingMode.HALF_UP).doubleValue();
+		result += "\tLift: "+ this.countAB + "/ (" + this.countA + "*" + this.countB +") = ";
+		result += new BigDecimal(lift).setScale(3,RoundingMode.HALF_UP).doubleValue();
+		return result;
+	}
+}

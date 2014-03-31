@@ -43,7 +43,7 @@ public class KMeans {
 			previousClusterCenters = clusterCenters;
 		}
 		
-		System.out.println(clusters.get(0).ClusterMembers.get(0).analyzeClusters(clusters,k));
+		clusters.get(0).ClusterMembers.get(0).drawChart(clusters,k);
 		
 		return clusters;
 	}
@@ -102,10 +102,10 @@ public class KMeans {
 		Item[] clusterCenters = new Item[k];
 		for (int i = 0; i<k; i++){
 			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;
-			//if (!clusterMembers.isEmpty()){
+			if (!clusterMembers.isEmpty()){
 				Item clusterCenter = clusterMembers.get(0).mean(clusterMembers);
 				clusterCenters[i] = clusterCenter;
-			//}
+			}
 		}
 		return clusterCenters;
 	}

@@ -1,0 +1,162 @@
+package clustering.data;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import clustering.kMean.KMeanCluster;
+
+/**
+ * Dataobject for clustering the survey 2014 on programming skills and university years
+ * @author Theresa Brandt von Fackh
+ *
+ */
+public class Survey2014 implements Item {
+	
+	/**
+	 * Loads data from a CSV file into a list of Survey2014 objects
+	 * @param filename Filename
+	 * @return List of Survey2014 objects
+	 */
+	public static ArrayList<Item> LoadAllDataFromCSV(String filename) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		
+		try {
+			String[][] dataOrig = CSVFileReader.readDataFile(filename,",","",true);
+			data = LoadAllData(dataOrig);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return data;
+	}
+
+	/**
+	 * Loads data into a list of Survey2014 objects
+	 * @param dataOrig Data to lod from
+	 * @return List of Survey2014 objects
+	 */
+	public static ArrayList<Item> LoadAllData(String[][] dataOrig) {
+		ArrayList<Item> data = new ArrayList<Item>();
+		for(int i = 0; i < dataOrig.length; i++)
+		{
+			try{
+				float s2014_prog_skill = Float.parseFloat(dataOrig[i][1].replace(",","."));
+				float s2014_uni_yrs = Float.parseFloat(dataOrig[i][2].replace(",","."));
+				data.add(new Survey2014(s2014_prog_skill, s2014_uni_yrs));			
+			} catch(Exception ex){
+				System.out.println("Data ("+dataOrig[i]+") cannot be used: "+ex.getMessage());
+			}
+		}
+
+		return data;
+	}
+
+	/**
+	 * The attribute to built a classifier for
+	 */
+	private float s2014_prog_skill;
+	private float s2014_uni_yrs;
+	
+	/**
+	 * Constructor
+	 * @param s2014_prog_skill
+	 * @param s2014_uni_yrs
+	 */
+	public Survey2014(float s2014_prog_skill, float s2014_uni_yrs)
+	{
+		this.s2014_prog_skill = s2014_prog_skill;
+		this.s2014_uni_yrs = s2014_uni_yrs;
+	}
+	
+	@Override
+	public String toString() {
+		String result = "Survey2014 Object -->"+
+				" | Prog_Skill = "+this.s2014_prog_skill+
+				" | Uni_yrs = "+this.s2014_uni_yrs
+				;
+		return result;
+	}
+
+	@Override
+	public int compareTo(Item obj) {
+		if (obj==null)
+			return 0;
+		Survey2014 survey2014_obj = (Survey2014)obj;
+		if (
+			this.s2014_prog_skill==survey2014_obj.s2014_prog_skill && 
+			this.s2014_uni_yrs==survey2014_obj.s2014_uni_yrs
+		)
+			return 1;
+		else
+			return 0;
+	}
+
+	@Override
+	public float distance(Item obj) {
+		float prog_skill = 0;
+		float uni_yrs = 0;
+		if (obj!=null){
+			Survey2014 survey2014_obj = (Survey2014)obj;
+			prog_skill = survey2014_obj.s2014_prog_skill;
+			uni_yrs = survey2014_obj.s2014_uni_yrs;
+		}
+		
+		float distance = 0;
+		distance += Math.pow(this.s2014_prog_skill-prog_skill,2);
+		distance += Math.pow(this.s2014_uni_yrs-uni_yrs,2);
+		return distance;
+	}
+
+	@Override
+	public Item mean(ArrayList<Item> clusterMembers) {
+		int size = clusterMembers.size();
+		float s2014_prog_skill = 0;
+		float s2014_uni_yrs = 0;
+		for (Item item: clusterMembers){
+			Survey2014 survey2014_obj = (Survey2014)item;
+			s2014_prog_skill += survey2014_obj.s2014_prog_skill;
+			s2014_uni_yrs += survey2014_obj.s2014_uni_yrs;
+		}
+		return new Survey2014(s2014_prog_skill/size,s2014_uni_yrs/size);
+	}
+	
+	@Override
+	public void drawChart(ArrayList<KMeanCluster> clusters, int k){
+		XYSeriesCollection dots = new XYSeriesCollection();
+		for (int i = 0; i<k; i++){
+			ArrayList<Item> clusterMembers = clusters.get(i).ClusterMembers;
+			XYSeries series = new XYSeries("Cluster "+(i+1));
+			for (Item item: clusterMembers){
+				Survey2014 survey2014_obj = (Survey2014)item;
+				double x = survey2014_obj.s2014_uni_yrs;
+			    double y = survey2014_obj.s2014_prog_skill;
+			    series.add(x,y);
+			}
+			
+			dots.addSeries(series);
+		}
+		
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "Scatter Plot", // chart title
+                "University years", // x axis label
+                "Programming Skill", // y axis label
+                dots, // data
+                PlotOrientation.VERTICAL,
+                true, // include legend
+                true, // tooltips
+                false // urls
+                );
+
+        // create and display a frame...
+        ChartFrame frame = new ChartFrame("Survey2014_Clustering", chart);
+        frame.pack();
+        frame.setVisible(true);
+	}
+
+}

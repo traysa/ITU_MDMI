@@ -9,6 +9,7 @@
 <fullyQualifiedTypeName name="supervisedLearning.data.Class_Label"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.util.HashSet"/>
+<<<<<<< HEAD
 <fullyQualifiedTypeName name="java.util.Dictionary"/>
 <fullyQualifiedTypeName name="data.ProgLangs"/>
 <fullyQualifiedTypeName name="data.OS"/>
@@ -16,4 +17,13 @@
 <fullyQualifiedTypeName name="data.FavSQLServ"/>
 <fullyQualifiedTypeName name="data.DataResolver"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
+=======
+<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
+<fullyQualifiedTypeName name="org.jfree.chart.plot.PlotOrientation"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFrame"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeriesCollection"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.XYSeries"/>
+<fullyQualifiedTypeName name="clustering.data.Survey2014"/>
+>>>>>>> 288cfdca9b4534ced4185d2480ab515779daa653
 </qualifiedTypeNameHistroy>
